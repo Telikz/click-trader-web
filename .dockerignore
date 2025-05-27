@@ -1,0 +1,78 @@
+### Logs
+logs
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+### Diagnostic reports
+report.*.json
+
+### Runtime data
+*.pid
+*.seed
+*.pid.lock
+pids
+
+### Coverage & test output
+coverage/
+*.lcov
+.nyc_output/
+.grunt/
+
+### Compiled directories & build output
+lib-cov/
+build/
+dist/
+.out/
+.output/
+
+### Dependency directories
+node_modules/
+jspm_packages/
+bower_components/
+web_modules/
+
+### Binary addons & config
+.lock-wscript
+
+### Caches
+.npm/
+.parcel-cache/
+.rpt2_cache/
+.rts2_cache_*/
+.fusebox/
+.docusaurus/
+.serverless/
+.dynamodb/
+.temp/
+.vuepress/dist
+
+### Package manager metadata
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+### TypeScript / ESLint / Stylelint / Misc caches
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+### Environment variables
+.env
+.env.local
+.env.*.local
+
+### REPL & debug
+.node_repl_history
+.tern-port
+
+### Editor & tool-specific
+.vscode-test/
+
+# Optional: uncomment if you don’t want the public folder in some static site generators
+# public/
+
