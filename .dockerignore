@@ -76,3 +76,5 @@ web_modules/
 # Optional: uncomment if you don’t want the public folder in some static site generators
 # public/
 
+click-trader-server
+
