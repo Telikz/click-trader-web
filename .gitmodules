@@ -1,0 +1,3 @@
+[submodule "click-trader-server"]
+	path = click-trader-server
+	url = git@github.com:Telikz/click-trader-server.git
