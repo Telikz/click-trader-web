@@ -44,7 +44,7 @@ export function useSpacetimeConnection() {
       };
 
       const conn = DbConnection.builder()
-         .withUri(import.meta.env.BASE_SPACETIMEDB_URL || "ws://localhost:3001")
+         .withUri(import.meta.env.SPACETIMEDB_URL || "ws://localhost:3001")
          .withModuleName("test")
          .withToken(localStorage.getItem("auth_token") || "")
          .onConnect(onConnect)
