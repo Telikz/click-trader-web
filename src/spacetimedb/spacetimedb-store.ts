@@ -44,7 +44,11 @@ export function useSpacetimeConnection() {
       };
 
       const conn = DbConnection.builder()
-         .withUri(import.meta.env.VITE_SPACETIMEDB_URL || "ws://localhost:3001")
+         .withUri(
+            import.meta.env.PROD
+               ? "wss://spacetimedb.minmaxing.net"
+               : "ws://localhost:3001"
+         )
          .withModuleName("test")
          .withToken(localStorage.getItem("auth_token") || "")
          .onConnect(onConnect)
