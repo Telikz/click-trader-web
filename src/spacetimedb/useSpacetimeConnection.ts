@@ -31,7 +31,7 @@ export function useSpacetimeConnection() {
          conn
             .subscriptionBuilder()
             .onApplied(() => console.log("SDK cache initialized"))
-            .subscribe(["SELECT * FROM message"]);
+            .subscribe(["SELECT * FROM player"]);
       };
 
       const onDisconnect = () => {

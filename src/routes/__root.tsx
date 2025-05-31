@@ -12,6 +12,8 @@ import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
+import { useSpacetimeConnection } from "~/spacetimedb/useSpacetimeConnection";
+import { usePlayerSync } from "~/spacetimedb/usePlayerSync";
 
 export const Route = createRootRouteWithContext<{
    queryClient: QueryClient;
@@ -73,6 +75,8 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+   useSpacetimeConnection();
+   usePlayerSync();
    return (
       <html>
          <head>

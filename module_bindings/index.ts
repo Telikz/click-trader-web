@@ -32,35 +32,32 @@ import {
 } from "@clockworklabs/spacetimedb-sdk";
 
 // Import and reexport all reducer arg types
-import { Add } from "./add_reducer.ts";
-export { Add };
 import { IdentityConnected } from "./identity_connected_reducer.ts";
 export { IdentityConnected };
 import { IdentityDisconnected } from "./identity_disconnected_reducer.ts";
 export { IdentityDisconnected };
-import { SayHello } from "./say_hello_reducer.ts";
-export { SayHello };
+import { IncreaseMoney } from "./increase_money_reducer.ts";
+export { IncreaseMoney };
+import { SetName } from "./set_name_reducer.ts";
+export { SetName };
 
 // Import and reexport all table handle types
-import { PersonTableHandle } from "./person_table.ts";
-export { PersonTableHandle };
+import { PlayerTableHandle } from "./player_table.ts";
+export { PlayerTableHandle };
 
 // Import and reexport all types
-import { Person } from "./person_type.ts";
-export { Person };
+import { Player } from "./player_type.ts";
+export { Player };
 
 const REMOTE_MODULE = {
   tables: {
-    person: {
-      tableName: "person",
-      rowType: Person.getTypeScriptAlgebraicType(),
+    player: {
+      tableName: "player",
+      rowType: Player.getTypeScriptAlgebraicType(),
+      primaryKey: "identity",
     },
   },
   reducers: {
-    add: {
-      reducerName: "add",
-      argsType: Add.getTypeScriptAlgebraicType(),
-    },
     identity_connected: {
       reducerName: "identity_connected",
       argsType: IdentityConnected.getTypeScriptAlgebraicType(),
@@ -69,9 +66,13 @@ const REMOTE_MODULE = {
       reducerName: "identity_disconnected",
       argsType: IdentityDisconnected.getTypeScriptAlgebraicType(),
     },
-    say_hello: {
-      reducerName: "say_hello",
-      argsType: SayHello.getTypeScriptAlgebraicType(),
+    increase_money: {
+      reducerName: "increase_money",
+      argsType: IncreaseMoney.getTypeScriptAlgebraicType(),
+    },
+    set_name: {
+      reducerName: "set_name",
+      argsType: SetName.getTypeScriptAlgebraicType(),
     },
   },
   // Constructors which are used by the DbConnectionImpl to
@@ -100,30 +101,14 @@ const REMOTE_MODULE = {
 
 // A type representing all the possible variants of a reducer.
 export type Reducer = never
-| { name: "Add", args: Add }
 | { name: "IdentityConnected", args: IdentityConnected }
 | { name: "IdentityDisconnected", args: IdentityDisconnected }
-| { name: "SayHello", args: SayHello }
+| { name: "IncreaseMoney", args: IncreaseMoney }
+| { name: "SetName", args: SetName }
 ;
 
 export class RemoteReducers {
   constructor(private connection: DbConnectionImpl, private setCallReducerFlags: SetReducerFlags) {}
-
-  add(name: string) {
-    const __args = { name };
-    let __writer = new BinaryWriter(1024);
-    Add.getTypeScriptAlgebraicType().serialize(__writer, __args);
-    let __argsBuffer = __writer.getBuffer();
-    this.connection.callReducer("add", __argsBuffer, this.setCallReducerFlags.addFlags);
-  }
-
-  onAdd(callback: (ctx: ReducerEventContext, name: string) => void) {
-    this.connection.onReducer("add", callback);
-  }
-
-  removeOnAdd(callback: (ctx: ReducerEventContext, name: string) => void) {
-    this.connection.offReducer("add", callback);
-  }
 
   onIdentityConnected(callback: (ctx: ReducerEventContext) => void) {
     this.connection.onReducer("identity_connected", callback);
@@ -141,29 +126,45 @@ export class RemoteReducers {
     this.connection.offReducer("identity_disconnected", callback);
   }
 
-  sayHello() {
-    this.connection.callReducer("say_hello", new Uint8Array(0), this.setCallReducerFlags.sayHelloFlags);
+  increaseMoney() {
+    this.connection.callReducer("increase_money", new Uint8Array(0), this.setCallReducerFlags.increaseMoneyFlags);
   }
 
-  onSayHello(callback: (ctx: ReducerEventContext) => void) {
-    this.connection.onReducer("say_hello", callback);
+  onIncreaseMoney(callback: (ctx: ReducerEventContext) => void) {
+    this.connection.onReducer("increase_money", callback);
   }
 
-  removeOnSayHello(callback: (ctx: ReducerEventContext) => void) {
-    this.connection.offReducer("say_hello", callback);
+  removeOnIncreaseMoney(callback: (ctx: ReducerEventContext) => void) {
+    this.connection.offReducer("increase_money", callback);
+  }
+
+  setName(username: string) {
+    const __args = { username };
+    let __writer = new BinaryWriter(1024);
+    SetName.getTypeScriptAlgebraicType().serialize(__writer, __args);
+    let __argsBuffer = __writer.getBuffer();
+    this.connection.callReducer("set_name", __argsBuffer, this.setCallReducerFlags.setNameFlags);
+  }
+
+  onSetName(callback: (ctx: ReducerEventContext, username: string) => void) {
+    this.connection.onReducer("set_name", callback);
+  }
+
+  removeOnSetName(callback: (ctx: ReducerEventContext, username: string) => void) {
+    this.connection.offReducer("set_name", callback);
   }
 
 }
 
 export class SetReducerFlags {
-  addFlags: CallReducerFlags = 'FullUpdate';
-  add(flags: CallReducerFlags) {
-    this.addFlags = flags;
+  increaseMoneyFlags: CallReducerFlags = 'FullUpdate';
+  increaseMoney(flags: CallReducerFlags) {
+    this.increaseMoneyFlags = flags;
   }
 
-  sayHelloFlags: CallReducerFlags = 'FullUpdate';
-  sayHello(flags: CallReducerFlags) {
-    this.sayHelloFlags = flags;
+  setNameFlags: CallReducerFlags = 'FullUpdate';
+  setName(flags: CallReducerFlags) {
+    this.setNameFlags = flags;
   }
 
 }
@@ -171,8 +172,8 @@ export class SetReducerFlags {
 export class RemoteTables {
   constructor(private connection: DbConnectionImpl) {}
 
-  get person(): PersonTableHandle {
-    return new PersonTableHandle(this.connection.clientCache.getOrCreateTable<Person>(REMOTE_MODULE.tables.person));
+  get player(): PlayerTableHandle {
+    return new PlayerTableHandle(this.connection.clientCache.getOrCreateTable<Player>(REMOTE_MODULE.tables.player));
   }
 }
 
