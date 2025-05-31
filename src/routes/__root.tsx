@@ -14,6 +14,7 @@ import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 import { useSpacetimeConnection } from "~/spacetimedb/useSpacetimeConnection";
 import { usePlayerSync } from "~/spacetimedb/usePlayerSync";
+import { useUpgradeSync } from "~/spacetimedb/useUpgradeSync";
 
 export const Route = createRootRouteWithContext<{
    queryClient: QueryClient;
@@ -77,6 +78,7 @@ function RootComponent() {
 function RootDocument({ children }: { children: React.ReactNode }) {
    useSpacetimeConnection();
    usePlayerSync();
+   useUpgradeSync();
    return (
       <html>
          <head>

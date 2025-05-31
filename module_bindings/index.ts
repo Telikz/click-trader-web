@@ -32,6 +32,10 @@ import {
 } from "@clockworklabs/spacetimedb-sdk";
 
 // Import and reexport all reducer arg types
+import { AddUpgrade } from "./add_upgrade_reducer.ts";
+export { AddUpgrade };
+import { BuyUpgrade } from "./buy_upgrade_reducer.ts";
+export { BuyUpgrade };
 import { IdentityConnected } from "./identity_connected_reducer.ts";
 export { IdentityConnected };
 import { IdentityDisconnected } from "./identity_disconnected_reducer.ts";
@@ -44,10 +48,14 @@ export { SetName };
 // Import and reexport all table handle types
 import { PlayerTableHandle } from "./player_table.ts";
 export { PlayerTableHandle };
+import { UpgradesTableHandle } from "./upgrades_table.ts";
+export { UpgradesTableHandle };
 
 // Import and reexport all types
 import { Player } from "./player_type.ts";
 export { Player };
+import { Upgrades } from "./upgrades_type.ts";
+export { Upgrades };
 
 const REMOTE_MODULE = {
   tables: {
@@ -56,8 +64,21 @@ const REMOTE_MODULE = {
       rowType: Player.getTypeScriptAlgebraicType(),
       primaryKey: "identity",
     },
+    upgrades: {
+      tableName: "upgrades",
+      rowType: Upgrades.getTypeScriptAlgebraicType(),
+      primaryKey: "id",
+    },
   },
   reducers: {
+    add_upgrade: {
+      reducerName: "add_upgrade",
+      argsType: AddUpgrade.getTypeScriptAlgebraicType(),
+    },
+    buy_upgrade: {
+      reducerName: "buy_upgrade",
+      argsType: BuyUpgrade.getTypeScriptAlgebraicType(),
+    },
     identity_connected: {
       reducerName: "identity_connected",
       argsType: IdentityConnected.getTypeScriptAlgebraicType(),
@@ -101,6 +122,8 @@ const REMOTE_MODULE = {
 
 // A type representing all the possible variants of a reducer.
 export type Reducer = never
+| { name: "AddUpgrade", args: AddUpgrade }
+| { name: "BuyUpgrade", args: BuyUpgrade }
 | { name: "IdentityConnected", args: IdentityConnected }
 | { name: "IdentityDisconnected", args: IdentityDisconnected }
 | { name: "IncreaseMoney", args: IncreaseMoney }
@@ -109,6 +132,38 @@ export type Reducer = never
 
 export class RemoteReducers {
   constructor(private connection: DbConnectionImpl, private setCallReducerFlags: SetReducerFlags) {}
+
+  addUpgrade(identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined, autoClickRate: bigint | undefined) {
+    const __args = { identifier, title, description, level, cost, passiveIncomeBonus, clickPowerBonus, clickTimerBonus, autoClickRate };
+    let __writer = new BinaryWriter(1024);
+    AddUpgrade.getTypeScriptAlgebraicType().serialize(__writer, __args);
+    let __argsBuffer = __writer.getBuffer();
+    this.connection.callReducer("add_upgrade", __argsBuffer, this.setCallReducerFlags.addUpgradeFlags);
+  }
+
+  onAddUpgrade(callback: (ctx: ReducerEventContext, identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined, autoClickRate: bigint | undefined) => void) {
+    this.connection.onReducer("add_upgrade", callback);
+  }
+
+  removeOnAddUpgrade(callback: (ctx: ReducerEventContext, identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined, autoClickRate: bigint | undefined) => void) {
+    this.connection.offReducer("add_upgrade", callback);
+  }
+
+  buyUpgrade(upgradeId: number) {
+    const __args = { upgradeId };
+    let __writer = new BinaryWriter(1024);
+    BuyUpgrade.getTypeScriptAlgebraicType().serialize(__writer, __args);
+    let __argsBuffer = __writer.getBuffer();
+    this.connection.callReducer("buy_upgrade", __argsBuffer, this.setCallReducerFlags.buyUpgradeFlags);
+  }
+
+  onBuyUpgrade(callback: (ctx: ReducerEventContext, upgradeId: number) => void) {
+    this.connection.onReducer("buy_upgrade", callback);
+  }
+
+  removeOnBuyUpgrade(callback: (ctx: ReducerEventContext, upgradeId: number) => void) {
+    this.connection.offReducer("buy_upgrade", callback);
+  }
 
   onIdentityConnected(callback: (ctx: ReducerEventContext) => void) {
     this.connection.onReducer("identity_connected", callback);
@@ -157,6 +212,16 @@ export class RemoteReducers {
 }
 
 export class SetReducerFlags {
+  addUpgradeFlags: CallReducerFlags = 'FullUpdate';
+  addUpgrade(flags: CallReducerFlags) {
+    this.addUpgradeFlags = flags;
+  }
+
+  buyUpgradeFlags: CallReducerFlags = 'FullUpdate';
+  buyUpgrade(flags: CallReducerFlags) {
+    this.buyUpgradeFlags = flags;
+  }
+
   increaseMoneyFlags: CallReducerFlags = 'FullUpdate';
   increaseMoney(flags: CallReducerFlags) {
     this.increaseMoneyFlags = flags;
@@ -174,6 +239,10 @@ export class RemoteTables {
 
   get player(): PlayerTableHandle {
     return new PlayerTableHandle(this.connection.clientCache.getOrCreateTable<Player>(REMOTE_MODULE.tables.player));
+  }
+
+  get upgrades(): UpgradesTableHandle {
+    return new UpgradesTableHandle(this.connection.clientCache.getOrCreateTable<Upgrades>(REMOTE_MODULE.tables.upgrades));
   }
 }
 

@@ -34,8 +34,12 @@ export type Player = {
   identity: Identity,
   username: string | undefined,
   money: bigint,
+  passiveIncome: bigint,
   clickPower: bigint,
+  clickTimer: bigint,
+  lastClick: Timestamp,
   online: boolean,
+  upgrades: number[],
 };
 
 /**
@@ -51,8 +55,12 @@ export namespace Player {
       new ProductTypeElement("identity", AlgebraicType.createIdentityType()),
       new ProductTypeElement("username", AlgebraicType.createOptionType(AlgebraicType.createStringType())),
       new ProductTypeElement("money", AlgebraicType.createU256Type()),
+      new ProductTypeElement("passiveIncome", AlgebraicType.createU128Type()),
       new ProductTypeElement("clickPower", AlgebraicType.createU64Type()),
+      new ProductTypeElement("clickTimer", AlgebraicType.createI64Type()),
+      new ProductTypeElement("lastClick", AlgebraicType.createTimestampType()),
       new ProductTypeElement("online", AlgebraicType.createBoolType()),
+      new ProductTypeElement("upgrades", AlgebraicType.createArrayType(AlgebraicType.createU32Type())),
     ]);
   }
 
