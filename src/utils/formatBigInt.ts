@@ -1,24 +1,57 @@
 export function formatBitInt(value: bigint): string {
    const suffixes = [
-      { suffix: "Q", digits: 15n },
-      { suffix: "T", digits: 12n },
-      { suffix: "B", digits: 9n },
-      { suffix: "M", digits: 6n },
-      { suffix: "K", digits: 3n },
+      { suffix: "Sx", threshold: 1_000_000_000_000_000_000_000n },
+      { suffix: "Qt", threshold: 1_000_000_000_000_000_000n },
+      { suffix: "Q", threshold: 1_000_000_000_000_000n },
+      { suffix: "T", threshold: 1_000_000_000_000n },
+      { suffix: "B", threshold: 1_000_000_000n },
+      { suffix: "M", threshold: 1_000_000n },
+      { suffix: "K", threshold: 1_000n },
    ];
 
-   const abs = value < 0n ? -value : value;
+   const sign = value < 0n ? "-" : "";
+   const absValue = value < 0n ? -value : value;
+   const currencySymbol = "$";
 
-   for (const { suffix, digits } of suffixes) {
-      const threshold = 10n ** digits;
+   if (absValue < 1000n) {
+      return `${currencySymbol}${sign}${absValue.toString()}`;
+   }
 
-      if (abs >= threshold) {
-         const whole = value / threshold;
-         const remainder = (abs % threshold) / 10n ** (digits - 1n);
-         const decimal = remainder === 0n ? "" : `.${remainder.toString()[0]}`;
-         return `${whole}${decimal}${suffix}`;
+   for (const { suffix, threshold } of suffixes) {
+      if (absValue >= threshold) {
+         const scaledValue = (absValue * 1000n) / threshold;
+         const wholePart = scaledValue / 1000n;
+         const decimalPart = scaledValue % 1000n;
+
+         let decimalString = "";
+         if (decimalPart !== 0n) {
+            let rawDecimalStr = decimalPart.toString();
+            while (rawDecimalStr.length < 3) {
+               rawDecimalStr = "0" + rawDecimalStr;
+            }
+
+            decimalString = `.${rawDecimalStr.substring(0, 3)}`;
+
+            if (decimalString.endsWith("0")) {
+               decimalString = decimalString.substring(
+                  0,
+                  decimalString.length - 1
+               );
+            }
+            if (decimalString.endsWith("0")) {
+               decimalString = decimalString.substring(
+                  0,
+                  decimalString.length - 1
+               );
+            }
+            if (decimalString === ".") {
+               decimalString = "";
+            }
+         }
+
+         return `${currencySymbol}${sign}${wholePart}${decimalString}${suffix}`;
       }
    }
 
-   return value.toString();
+   return `${currencySymbol}${sign}${absValue.toString()}`;
 }
