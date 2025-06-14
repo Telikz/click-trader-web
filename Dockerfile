@@ -1,13 +1,13 @@
-FROM oven/bun:alpine as builder
+FROM oven/bun:alpine AS builder
 
 WORKDIR /app
 
 COPY . .
 
 RUN bun install
-RUN bun run build --preset bun
+RUN bun run build
 
-FROM oven/bun:alpine as runtime
+FROM oven/bun:alpine AS runtime
 
 WORKDIR /app
 
