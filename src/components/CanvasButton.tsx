@@ -184,7 +184,7 @@ export default function CanvasButton({
             -Math.PI / 2,
             -Math.PI / 2 + progress * 2 * Math.PI
          );
-         ctx.strokeStyle = "#00f0ff";
+         ctx.strokeStyle = "#3d0aaa";
          ctx.lineWidth = 10;
          ctx.lineCap = "round";
          ctx.stroke();
@@ -192,8 +192,8 @@ export default function CanvasButton({
 
       ctx.beginPath();
       ctx.arc(center, center, r - 10, 0, 2 * Math.PI);
-      ctx.fillStyle = disabled ? "#4a5568" : "#0af";
-      ctx.shadowColor = disabled ? "transparent" : "#00f0ff";
+      ctx.fillStyle = disabled ? "#4a5568" : "#5232c9";
+      ctx.shadowColor = disabled ? "transparent" : "#5925c8";
       ctx.shadowBlur = disabled ? 0 : 15;
       ctx.fill();
 

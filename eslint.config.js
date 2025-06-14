@@ -12,9 +12,6 @@ export default defineConfig([
       files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
       plugins: { js },
       extends: ["js/recommended"],
-      rules: {
-         "max-len": ["warn", { code: 100 }],
-      },
    },
    {
       files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
@@ -28,7 +25,6 @@ export default defineConfig([
       rules: {
          ...pluginReact.configs.flat.recommended.rules,
          "react/react-in-jsx-scope": "off",
-         "max-len": ["warn", { code: 100 }],
       },
    },
    {

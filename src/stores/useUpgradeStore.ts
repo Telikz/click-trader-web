@@ -20,3 +20,14 @@ export function useLockedUpgrades() {
       (upgrade) => !player.upgrades.includes(upgrade.id)
    );
 }
+
+export function useUnlockedUpgrades() {
+   const availableUpgrades = useUpgrades((s) => s.upgrades);
+   const player = usePlayerStore((s) => s.currentPlayer);
+
+   if (!player) return [];
+
+   return Array.from(availableUpgrades.values()).filter((upgrade) =>
+      player.upgrades.includes(upgrade.id)
+   );
+}
