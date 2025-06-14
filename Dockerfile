@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN bun install
-RUN bun run build --preset bun
+RUN bun run build
 
 FROM oven/bun:alpine as runtime
 
