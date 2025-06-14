@@ -37,9 +37,9 @@ export type Player = {
   passiveIncome: bigint,
   clickPower: bigint,
   clickTimer: bigint,
-  lastClick: Timestamp,
   online: boolean,
   upgrades: number[],
+  lastClick: Timestamp,
 };
 
 /**
@@ -58,9 +58,9 @@ export namespace Player {
       new ProductTypeElement("passiveIncome", AlgebraicType.createU128Type()),
       new ProductTypeElement("clickPower", AlgebraicType.createU64Type()),
       new ProductTypeElement("clickTimer", AlgebraicType.createI64Type()),
-      new ProductTypeElement("lastClick", AlgebraicType.createTimestampType()),
       new ProductTypeElement("online", AlgebraicType.createBoolType()),
-      new ProductTypeElement("upgrades", AlgebraicType.createArrayType(AlgebraicType.createU32Type())),
+      new ProductTypeElement("upgrades", AlgebraicType.createArrayType(AlgebraicType.createU16Type())),
+      new ProductTypeElement("lastClick", AlgebraicType.createTimestampType()),
     ]);
   }
 

@@ -31,30 +31,32 @@ import {
   deepEqual,
 } from "@clockworklabs/spacetimedb-sdk";
 
-export type BuyUpgrade = {
-  upgradeId: number,
+import { UpdatePlayersSchedule as __UpdatePlayersSchedule } from "./update_players_schedule_type";
+
+export type UpdatePlayers = {
+  args: __UpdatePlayersSchedule,
 };
 
 /**
  * A namespace for generated helper functions.
  */
-export namespace BuyUpgrade {
+export namespace UpdatePlayers {
   /**
   * A function which returns this type represented as an AlgebraicType.
   * This function is derived from the AlgebraicType used to generate this type.
   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("upgradeId", AlgebraicType.createU16Type()),
+      new ProductTypeElement("args", __UpdatePlayersSchedule.getTypeScriptAlgebraicType()),
     ]);
   }
 
-  export function serialize(writer: BinaryWriter, value: BuyUpgrade): void {
-    BuyUpgrade.getTypeScriptAlgebraicType().serialize(writer, value);
+  export function serialize(writer: BinaryWriter, value: UpdatePlayers): void {
+    UpdatePlayers.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
-  export function deserialize(reader: BinaryReader): BuyUpgrade {
-    return BuyUpgrade.getTypeScriptAlgebraicType().deserialize(reader);
+  export function deserialize(reader: BinaryReader): UpdatePlayers {
+    return UpdatePlayers.getTypeScriptAlgebraicType().deserialize(reader);
   }
 
 }

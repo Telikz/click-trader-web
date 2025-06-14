@@ -40,7 +40,6 @@ export type AddUpgrade = {
   passiveIncomeBonus: bigint | undefined,
   clickPowerBonus: bigint | undefined,
   clickTimerBonus: bigint | undefined,
-  autoClickRate: bigint | undefined,
 };
 
 /**
@@ -56,12 +55,11 @@ export namespace AddUpgrade {
       new ProductTypeElement("identifier", AlgebraicType.createStringType()),
       new ProductTypeElement("title", AlgebraicType.createStringType()),
       new ProductTypeElement("description", AlgebraicType.createStringType()),
-      new ProductTypeElement("level", AlgebraicType.createU32Type()),
+      new ProductTypeElement("level", AlgebraicType.createU8Type()),
       new ProductTypeElement("cost", AlgebraicType.createU128Type()),
       new ProductTypeElement("passiveIncomeBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
       new ProductTypeElement("clickPowerBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
       new ProductTypeElement("clickTimerBonus", AlgebraicType.createOptionType(AlgebraicType.createI64Type())),
-      new ProductTypeElement("autoClickRate", AlgebraicType.createOptionType(AlgebraicType.createI64Type())),
     ]);
   }
 

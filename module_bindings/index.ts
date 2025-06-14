@@ -44,16 +44,22 @@ import { IncreaseMoney } from "./increase_money_reducer.ts";
 export { IncreaseMoney };
 import { SetName } from "./set_name_reducer.ts";
 export { SetName };
+import { UpdatePlayers } from "./update_players_reducer.ts";
+export { UpdatePlayers };
 
 // Import and reexport all table handle types
 import { PlayerTableHandle } from "./player_table.ts";
 export { PlayerTableHandle };
+import { UpdatePlayerScheduleTableHandle } from "./update_player_schedule_table.ts";
+export { UpdatePlayerScheduleTableHandle };
 import { UpgradesTableHandle } from "./upgrades_table.ts";
 export { UpgradesTableHandle };
 
 // Import and reexport all types
 import { Player } from "./player_type.ts";
 export { Player };
+import { UpdatePlayersSchedule } from "./update_players_schedule_type.ts";
+export { UpdatePlayersSchedule };
 import { Upgrades } from "./upgrades_type.ts";
 export { Upgrades };
 
@@ -63,6 +69,11 @@ const REMOTE_MODULE = {
       tableName: "player",
       rowType: Player.getTypeScriptAlgebraicType(),
       primaryKey: "identity",
+    },
+    update_player_schedule: {
+      tableName: "update_player_schedule",
+      rowType: UpdatePlayersSchedule.getTypeScriptAlgebraicType(),
+      primaryKey: "id",
     },
     upgrades: {
       tableName: "upgrades",
@@ -94,6 +105,10 @@ const REMOTE_MODULE = {
     set_name: {
       reducerName: "set_name",
       argsType: SetName.getTypeScriptAlgebraicType(),
+    },
+    update_players: {
+      reducerName: "update_players",
+      argsType: UpdatePlayers.getTypeScriptAlgebraicType(),
     },
   },
   // Constructors which are used by the DbConnectionImpl to
@@ -128,24 +143,25 @@ export type Reducer = never
 | { name: "IdentityDisconnected", args: IdentityDisconnected }
 | { name: "IncreaseMoney", args: IncreaseMoney }
 | { name: "SetName", args: SetName }
+| { name: "UpdatePlayers", args: UpdatePlayers }
 ;
 
 export class RemoteReducers {
   constructor(private connection: DbConnectionImpl, private setCallReducerFlags: SetReducerFlags) {}
 
-  addUpgrade(identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined, autoClickRate: bigint | undefined) {
-    const __args = { identifier, title, description, level, cost, passiveIncomeBonus, clickPowerBonus, clickTimerBonus, autoClickRate };
+  addUpgrade(identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined) {
+    const __args = { identifier, title, description, level, cost, passiveIncomeBonus, clickPowerBonus, clickTimerBonus };
     let __writer = new BinaryWriter(1024);
     AddUpgrade.getTypeScriptAlgebraicType().serialize(__writer, __args);
     let __argsBuffer = __writer.getBuffer();
     this.connection.callReducer("add_upgrade", __argsBuffer, this.setCallReducerFlags.addUpgradeFlags);
   }
 
-  onAddUpgrade(callback: (ctx: ReducerEventContext, identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined, autoClickRate: bigint | undefined) => void) {
+  onAddUpgrade(callback: (ctx: ReducerEventContext, identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined) => void) {
     this.connection.onReducer("add_upgrade", callback);
   }
 
-  removeOnAddUpgrade(callback: (ctx: ReducerEventContext, identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined, autoClickRate: bigint | undefined) => void) {
+  removeOnAddUpgrade(callback: (ctx: ReducerEventContext, identifier: string, title: string, description: string, level: number, cost: bigint, passiveIncomeBonus: bigint | undefined, clickPowerBonus: bigint | undefined, clickTimerBonus: bigint | undefined) => void) {
     this.connection.offReducer("add_upgrade", callback);
   }
 
@@ -209,6 +225,22 @@ export class RemoteReducers {
     this.connection.offReducer("set_name", callback);
   }
 
+  updatePlayers(args: UpdatePlayersSchedule) {
+    const __args = { args };
+    let __writer = new BinaryWriter(1024);
+    UpdatePlayers.getTypeScriptAlgebraicType().serialize(__writer, __args);
+    let __argsBuffer = __writer.getBuffer();
+    this.connection.callReducer("update_players", __argsBuffer, this.setCallReducerFlags.updatePlayersFlags);
+  }
+
+  onUpdatePlayers(callback: (ctx: ReducerEventContext, args: UpdatePlayersSchedule) => void) {
+    this.connection.onReducer("update_players", callback);
+  }
+
+  removeOnUpdatePlayers(callback: (ctx: ReducerEventContext, args: UpdatePlayersSchedule) => void) {
+    this.connection.offReducer("update_players", callback);
+  }
+
 }
 
 export class SetReducerFlags {
@@ -232,6 +264,11 @@ export class SetReducerFlags {
     this.setNameFlags = flags;
   }
 
+  updatePlayersFlags: CallReducerFlags = 'FullUpdate';
+  updatePlayers(flags: CallReducerFlags) {
+    this.updatePlayersFlags = flags;
+  }
+
 }
 
 export class RemoteTables {
@@ -239,6 +276,10 @@ export class RemoteTables {
 
   get player(): PlayerTableHandle {
     return new PlayerTableHandle(this.connection.clientCache.getOrCreateTable<Player>(REMOTE_MODULE.tables.player));
+  }
+
+  get updatePlayerSchedule(): UpdatePlayerScheduleTableHandle {
+    return new UpdatePlayerScheduleTableHandle(this.connection.clientCache.getOrCreateTable<UpdatePlayersSchedule>(REMOTE_MODULE.tables.update_player_schedule));
   }
 
   get upgrades(): UpgradesTableHandle {

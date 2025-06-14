@@ -32,15 +32,14 @@ import {
 } from "@clockworklabs/spacetimedb-sdk";
 export type Upgrades = {
   id: number,
-  identifier: string,
   level: number,
   cost: bigint,
   title: string,
+  identifier: string,
   description: string,
   passiveIncomeBonus: bigint | undefined,
   clickPowerBonus: bigint | undefined,
   clickTimerBonus: bigint | undefined,
-  autoClickRate: bigint | undefined,
 };
 
 /**
@@ -53,16 +52,15 @@ export namespace Upgrades {
   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("id", AlgebraicType.createU32Type()),
-      new ProductTypeElement("identifier", AlgebraicType.createStringType()),
-      new ProductTypeElement("level", AlgebraicType.createU32Type()),
+      new ProductTypeElement("id", AlgebraicType.createU16Type()),
+      new ProductTypeElement("level", AlgebraicType.createU8Type()),
       new ProductTypeElement("cost", AlgebraicType.createU128Type()),
       new ProductTypeElement("title", AlgebraicType.createStringType()),
+      new ProductTypeElement("identifier", AlgebraicType.createStringType()),
       new ProductTypeElement("description", AlgebraicType.createStringType()),
       new ProductTypeElement("passiveIncomeBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
       new ProductTypeElement("clickPowerBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
       new ProductTypeElement("clickTimerBonus", AlgebraicType.createOptionType(AlgebraicType.createI64Type())),
-      new ProductTypeElement("autoClickRate", AlgebraicType.createOptionType(AlgebraicType.createI64Type())),
     ]);
   }
 
