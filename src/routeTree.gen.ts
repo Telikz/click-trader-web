@@ -10,11 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UpgradesRouteImport } from './routes/upgrades'
+import { Route as TradingRouteImport } from './routes/trading'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LeaderboardsRouteImport } from './routes/leaderboards'
 import { Route as IndexRouteImport } from './routes/index'
 
 const UpgradesRoute = UpgradesRouteImport.update({
   id: '/upgrades',
   path: '/upgrades',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TradingRoute = TradingRouteImport.update({
+  id: '/trading',
+  path: '/trading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaderboardsRoute = LeaderboardsRouteImport.update({
+  id: '/leaderboards',
+  path: '/leaderboards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +43,39 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/leaderboards': typeof LeaderboardsRoute
+  '/profile': typeof ProfileRoute
+  '/trading': typeof TradingRoute
   '/upgrades': typeof UpgradesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/leaderboards': typeof LeaderboardsRoute
+  '/profile': typeof ProfileRoute
+  '/trading': typeof TradingRoute
   '/upgrades': typeof UpgradesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/leaderboards': typeof LeaderboardsRoute
+  '/profile': typeof ProfileRoute
+  '/trading': typeof TradingRoute
   '/upgrades': typeof UpgradesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/upgrades'
+  fullPaths: '/' | '/leaderboards' | '/profile' | '/trading' | '/upgrades'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/upgrades'
-  id: '__root__' | '/' | '/upgrades'
+  to: '/' | '/leaderboards' | '/profile' | '/trading' | '/upgrades'
+  id: '__root__' | '/' | '/leaderboards' | '/profile' | '/trading' | '/upgrades'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LeaderboardsRoute: typeof LeaderboardsRoute
+  ProfileRoute: typeof ProfileRoute
+  TradingRoute: typeof TradingRoute
   UpgradesRoute: typeof UpgradesRoute
 }
 
@@ -56,6 +86,27 @@ declare module '@tanstack/react-router' {
       path: '/upgrades'
       fullPath: '/upgrades'
       preLoaderRoute: typeof UpgradesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trading': {
+      id: '/trading'
+      path: '/trading'
+      fullPath: '/trading'
+      preLoaderRoute: typeof TradingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leaderboards': {
+      id: '/leaderboards'
+      path: '/leaderboards'
+      fullPath: '/leaderboards'
+      preLoaderRoute: typeof LeaderboardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +121,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LeaderboardsRoute: LeaderboardsRoute,
+  ProfileRoute: ProfileRoute,
+  TradingRoute: TradingRoute,
   UpgradesRoute: UpgradesRoute,
 }
 export const routeTree = rootRouteImport

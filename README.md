@@ -61,7 +61,7 @@ The React application is built with [TanStack Start](https://tanstack.com/start/
 - **Languages:** TypeScript, Rust, JSX
 - **Frontend:** React, Tanstack Start, @tanstack/react-query, @tanstack/react-router, Zustand
 - **CSS:** Tailwind CSS, DaisyUI
-- **Build & Dev:** Vinxi (React Start + Vite), Bun (runtime), PostCSS, ESLint, Prettier
+- **Build & Dev:** Vinxi (React Start + Vite), PostCSS, ESLint, Prettier
 - **Backend Module:** SpaceTimeDB (Rust crate), @clockworklabs/spacetimedb-sdk
 - **Deployment:** Docker multi‑stage build
 
@@ -70,7 +70,6 @@ The React application is built with [TanStack Start](https://tanstack.com/start/
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (v16+)
-- [Bun](https://bun.sh/) (optional, for production runtime)
 - [Rust](https://rust-lang.org/) toolchain (for the SpaceTimeDB module)
 - [A running SpaceTimeDB server](https://spacetimedb.com/home) (local or remote)
 

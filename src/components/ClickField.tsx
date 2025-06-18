@@ -10,7 +10,7 @@ export default function ClickField() {
 
    return (
       <div className="flex-1 bg-base-100 rounded-lg shadow-lg p-4 flex flex-col items-center justify-center">
-         <h3 className="text-3xl font-semibold mb-6 text-primary">
+         <h3 className="text-3xl font-semibold mb-3 text-primary">
             Click to Earn!
          </h3>
          <CanvasButton

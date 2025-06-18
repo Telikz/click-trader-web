@@ -1,5 +1,5 @@
-import UsernameForm from "~/components/UsernameForm";
-import { formatBitInt } from "~/utils/formatBigInt";
+import UsernameForm from "~/components/player/UsernameForm";
+import { formatBigInt } from "~/utils/formatBigInt";
 import { usePlayerStore } from "~/stores/usePlayerStore";
 
 export default function PlayerHeader() {
@@ -20,7 +20,7 @@ export default function PlayerHeader() {
                Your Current Balance:
             </p>
             <h2 className="text-5xl font-extrabold text-primary">
-               {formatBitInt(currentPlayer.money)}
+               {formatBigInt(currentPlayer.money)}
             </h2>
          </div>
       </div>

@@ -30,6 +30,8 @@ import {
   Timestamp,
   deepEqual,
 } from "@clockworklabs/spacetimedb-sdk";
+import { StockType as __StockType } from "./stock_type_type";
+
 export type Player = {
   identity: Identity,
   username: string | undefined,
@@ -39,6 +41,7 @@ export type Player = {
   clickTimer: bigint,
   online: boolean,
   upgrades: number[],
+  stocks: __StockType[],
   lastClick: Timestamp,
 };
 
@@ -56,10 +59,11 @@ export namespace Player {
       new ProductTypeElement("username", AlgebraicType.createOptionType(AlgebraicType.createStringType())),
       new ProductTypeElement("money", AlgebraicType.createU256Type()),
       new ProductTypeElement("passiveIncome", AlgebraicType.createU128Type()),
-      new ProductTypeElement("clickPower", AlgebraicType.createU64Type()),
+      new ProductTypeElement("clickPower", AlgebraicType.createU128Type()),
       new ProductTypeElement("clickTimer", AlgebraicType.createI64Type()),
       new ProductTypeElement("online", AlgebraicType.createBoolType()),
       new ProductTypeElement("upgrades", AlgebraicType.createArrayType(AlgebraicType.createU16Type())),
+      new ProductTypeElement("stocks", AlgebraicType.createArrayType(__StockType.getTypeScriptAlgebraicType())),
       new ProductTypeElement("lastClick", AlgebraicType.createTimestampType()),
     ]);
   }
