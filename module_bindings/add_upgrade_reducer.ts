@@ -57,9 +57,9 @@ export namespace AddUpgrade {
       new ProductTypeElement("description", AlgebraicType.createStringType()),
       new ProductTypeElement("level", AlgebraicType.createU8Type()),
       new ProductTypeElement("cost", AlgebraicType.createU128Type()),
-      new ProductTypeElement("passiveIncomeBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
-      new ProductTypeElement("clickPowerBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
-      new ProductTypeElement("clickTimerBonus", AlgebraicType.createOptionType(AlgebraicType.createI64Type())),
+      new ProductTypeElement("passiveIncomeBonus", AlgebraicType.createOptionType(AlgebraicType.createU128Type())),
+      new ProductTypeElement("clickPowerBonus", AlgebraicType.createOptionType(AlgebraicType.createU128Type())),
+      new ProductTypeElement("clickTimerBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
     ]);
   }
 

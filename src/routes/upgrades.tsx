@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import UpgradeForm from "~/components/UpgradeForm";
-import UpgradesList from "~/components/UpgradesList";
+import UpgradeForm from "~/components/upgrades/UpgradeForm";
+import UpgradesList from "~/components/upgrades/UpgradesList";
 import { useUpgrades } from "~/stores/useUpgradeStore";
 
 export const Route = createFileRoute("/upgrades")({
