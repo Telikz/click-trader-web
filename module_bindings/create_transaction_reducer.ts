@@ -31,36 +31,36 @@ import {
   deepEqual,
 } from "@clockworklabs/spacetimedb-sdk";
 
-export type CreateStock = {
-  name: string,
-  description: string,
-  initialPrice: bigint,
-  totalShares: bigint,
+import { TransactionType as __TransactionType } from "./transaction_type_type";
+
+export type CreateTransaction = {
+  stockId: number,
+  amount: bigint,
+  txType: __TransactionType,
 };
 
 /**
  * A namespace for generated helper functions.
  */
-export namespace CreateStock {
+export namespace CreateTransaction {
   /**
   * A function which returns this type represented as an AlgebraicType.
   * This function is derived from the AlgebraicType used to generate this type.
   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("name", AlgebraicType.createStringType()),
-      new ProductTypeElement("description", AlgebraicType.createStringType()),
-      new ProductTypeElement("initialPrice", AlgebraicType.createU128Type()),
-      new ProductTypeElement("totalShares", AlgebraicType.createU64Type()),
+      new ProductTypeElement("stockId", AlgebraicType.createU16Type()),
+      new ProductTypeElement("amount", AlgebraicType.createU64Type()),
+      new ProductTypeElement("txType", __TransactionType.getTypeScriptAlgebraicType()),
     ]);
   }
 
-  export function serialize(writer: BinaryWriter, value: CreateStock): void {
-    CreateStock.getTypeScriptAlgebraicType().serialize(writer, value);
+  export function serialize(writer: BinaryWriter, value: CreateTransaction): void {
+    CreateTransaction.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
-  export function deserialize(reader: BinaryReader): CreateStock {
-    return CreateStock.getTypeScriptAlgebraicType().deserialize(reader);
+  export function deserialize(reader: BinaryReader): CreateTransaction {
+    return CreateTransaction.getTypeScriptAlgebraicType().deserialize(reader);
   }
 
 }

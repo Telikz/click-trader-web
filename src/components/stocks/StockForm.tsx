@@ -9,7 +9,6 @@ export default function StockForm() {
       description: "",
       initial_price: 0n,
       total_shares: 0n,
-      volatility: 5,
    });
 
    const [status, setStatus] = useState<string | null>(null);
@@ -27,10 +26,6 @@ export default function StockForm() {
             case "total_shares":
                // This prevents a crash from `BigInt("")` and handles empty inputs gracefully.
                newForm[name] = BigInt(value || "0");
-               break;
-            case "volatility":
-               // Explicitly convert to a number.
-               newForm[name] = Number(value);
                break;
             default:
                // ✅ FIX: This default case handles the `name` and `description` fields.
@@ -59,8 +54,7 @@ export default function StockForm() {
          form.name,
          form.description,
          form.initial_price,
-         form.total_shares,
-         form.volatility
+         form.total_shares
       );
 
       // Optimistically update UI
@@ -70,7 +64,6 @@ export default function StockForm() {
          description: "",
          initial_price: 0n,
          total_shares: 0n,
-         volatility: 5,
       });
    };
 
@@ -108,18 +101,6 @@ export default function StockForm() {
             onChange={handleChange}
             className="border p-2 rounded"
          />
-         <label className="text-sm text-gray-600">
-            Volatility (Current: {form.volatility})
-            <input
-               name="volatility"
-               type="range"
-               min="1"
-               max="100"
-               value={form.volatility}
-               onChange={handleChange}
-               className="w-full"
-            />
-         </label>
          <button
             onClick={handleSubmit}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"

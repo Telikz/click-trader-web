@@ -1,6 +1,6 @@
 import { formatBigInt } from "~/utils/formatBigInt";
 import { useSpacetime } from "~/spacetimedb/useSpacetimeConnection";
-import { Stock } from "../../../module_bindings";
+import { Stock, TransactionType } from "../../../module_bindings";
 import { usePlayerStore } from "~/stores/usePlayerStore";
 import { useState } from "react";
 
@@ -59,11 +59,36 @@ export default function StockList({ stocks }: { stocks: Stock[] }) {
                                  {stock.name}
                               </p>
                               <p className="text-sm text-info">
-                                 Price per Share:{" "}
-                                 <span className="font-bold text-primary">
-                                    {formatBigInt(stock.pricePerShare)}
+                                 <span className="block">
+                                    Price per Share:{" "}
+                                    <span className="font-bold text-primary">
+                                       {formatBigInt(stock.pricePerShare)}
+                                    </span>
+                                 </span>
+                                 <span className="block">
+                                    + Buy Fee:{" "}
+                                    <span className="font-bold text-primary">
+                                       $
+                                       {(
+                                          (Number(stock.pricePerShare) *
+                                             currentPlayer.stockBuyFee) /
+                                          1000000
+                                       ).toFixed(3)}
+                                    </span>
+                                 </span>
+                                 <span className="block">
+                                    + Sell Fee:{" "}
+                                    <span className="font-bold text-primary">
+                                       $
+                                       {(
+                                          (Number(stock.pricePerShare) *
+                                             currentPlayer.stockSellFee) /
+                                          1000000
+                                       ).toFixed(3)}
+                                    </span>
                                  </span>
                               </p>
+
                               <p className="text-sm text-info">
                                  Total Value:{" "}
                                  <span className="font-bold text-info">
@@ -98,9 +123,10 @@ export default function StockList({ stocks }: { stocks: Stock[] }) {
                                  <button
                                     className="btn btn-primary px-4 py-2 font-bold"
                                     onClick={() =>
-                                       conn.reducers.buyStock(
+                                       conn.reducers.createTransaction(
                                           stock.id,
-                                          inputAmount
+                                          inputAmount,
+                                          TransactionType.Buy as TransactionType
                                        )
                                     }
                                     disabled={
@@ -113,9 +139,10 @@ export default function StockList({ stocks }: { stocks: Stock[] }) {
                                  <button
                                     className="btn btn-secondary px-4 py-2 font-bold"
                                     onClick={() =>
-                                       conn.reducers.sellStock(
+                                       conn.reducers.createTransaction(
                                           stock.id,
-                                          inputAmount
+                                          inputAmount,
+                                          TransactionType.Sell as TransactionType
                                        )
                                     }
                                     disabled={
