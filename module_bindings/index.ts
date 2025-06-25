@@ -34,40 +34,46 @@ import {
 // Import and reexport all reducer arg types
 import { AddUpgrade } from "./add_upgrade_reducer.ts";
 export { AddUpgrade };
-import { BuyStock } from "./buy_stock_reducer.ts";
-export { BuyStock };
 import { BuyUpgrade } from "./buy_upgrade_reducer.ts";
 export { BuyUpgrade };
 import { CreateStock } from "./create_stock_reducer.ts";
 export { CreateStock };
+import { CreateTransaction } from "./create_transaction_reducer.ts";
+export { CreateTransaction };
 import { IdentityConnected } from "./identity_connected_reducer.ts";
 export { IdentityConnected };
 import { IdentityDisconnected } from "./identity_disconnected_reducer.ts";
 export { IdentityDisconnected };
 import { IncreaseMoney } from "./increase_money_reducer.ts";
 export { IncreaseMoney };
-import { SellStock } from "./sell_stock_reducer.ts";
-export { SellStock };
 import { SetName } from "./set_name_reducer.ts";
 export { SetName };
 import { UpdatePlayers } from "./update_players_reducer.ts";
 export { UpdatePlayers };
 import { UpdateStockPrices } from "./update_stock_prices_reducer.ts";
 export { UpdateStockPrices };
+import { UpdateTransactions } from "./update_transactions_reducer.ts";
+export { UpdateTransactions };
 
 // Import and reexport all table handle types
+import { MarketConfigTableHandle } from "./market_config_table.ts";
+export { MarketConfigTableHandle };
 import { PlayerTableHandle } from "./player_table.ts";
 export { PlayerTableHandle };
 import { StockTableHandle } from "./stock_table.ts";
 export { StockTableHandle };
 import { StockMarketScheduleTableHandle } from "./stock_market_schedule_table.ts";
 export { StockMarketScheduleTableHandle };
+import { TransactionTableHandle } from "./transaction_table.ts";
+export { TransactionTableHandle };
 import { UpdatePlayerScheduleTableHandle } from "./update_player_schedule_table.ts";
 export { UpdatePlayerScheduleTableHandle };
 import { UpgradesTableHandle } from "./upgrades_table.ts";
 export { UpgradesTableHandle };
 
 // Import and reexport all types
+import { MarketConfig } from "./market_config_type.ts";
+export { MarketConfig };
 import { Player } from "./player_type.ts";
 export { Player };
 import { Stock } from "./stock_type.ts";
@@ -76,6 +82,12 @@ import { StockMarketSchedule } from "./stock_market_schedule_type.ts";
 export { StockMarketSchedule };
 import { StockType } from "./stock_type_type.ts";
 export { StockType };
+import { Transaction } from "./transaction_type.ts";
+export { Transaction };
+import { TransactionStatus } from "./transaction_status_type.ts";
+export { TransactionStatus };
+import { TransactionType } from "./transaction_type_type.ts";
+export { TransactionType };
 import { UpdatePlayersSchedule } from "./update_players_schedule_type.ts";
 export { UpdatePlayersSchedule };
 import { Upgrades } from "./upgrades_type.ts";
@@ -83,6 +95,10 @@ export { Upgrades };
 
 const REMOTE_MODULE = {
   tables: {
+    market_config: {
+      tableName: "market_config",
+      rowType: MarketConfig.getTypeScriptAlgebraicType(),
+    },
     player: {
       tableName: "player",
       rowType: Player.getTypeScriptAlgebraicType(),
@@ -96,6 +112,11 @@ const REMOTE_MODULE = {
     stock_market_schedule: {
       tableName: "stock_market_schedule",
       rowType: StockMarketSchedule.getTypeScriptAlgebraicType(),
+      primaryKey: "id",
+    },
+    transaction: {
+      tableName: "transaction",
+      rowType: Transaction.getTypeScriptAlgebraicType(),
       primaryKey: "id",
     },
     update_player_schedule: {
@@ -114,10 +135,6 @@ const REMOTE_MODULE = {
       reducerName: "add_upgrade",
       argsType: AddUpgrade.getTypeScriptAlgebraicType(),
     },
-    buy_stock: {
-      reducerName: "buy_stock",
-      argsType: BuyStock.getTypeScriptAlgebraicType(),
-    },
     buy_upgrade: {
       reducerName: "buy_upgrade",
       argsType: BuyUpgrade.getTypeScriptAlgebraicType(),
@@ -125,6 +142,10 @@ const REMOTE_MODULE = {
     create_stock: {
       reducerName: "create_stock",
       argsType: CreateStock.getTypeScriptAlgebraicType(),
+    },
+    create_transaction: {
+      reducerName: "create_transaction",
+      argsType: CreateTransaction.getTypeScriptAlgebraicType(),
     },
     identity_connected: {
       reducerName: "identity_connected",
@@ -138,10 +159,6 @@ const REMOTE_MODULE = {
       reducerName: "increase_money",
       argsType: IncreaseMoney.getTypeScriptAlgebraicType(),
     },
-    sell_stock: {
-      reducerName: "sell_stock",
-      argsType: SellStock.getTypeScriptAlgebraicType(),
-    },
     set_name: {
       reducerName: "set_name",
       argsType: SetName.getTypeScriptAlgebraicType(),
@@ -153,6 +170,10 @@ const REMOTE_MODULE = {
     update_stock_prices: {
       reducerName: "update_stock_prices",
       argsType: UpdateStockPrices.getTypeScriptAlgebraicType(),
+    },
+    update_transactions: {
+      reducerName: "update_transactions",
+      argsType: UpdateTransactions.getTypeScriptAlgebraicType(),
     },
   },
   // Constructors which are used by the DbConnectionImpl to
@@ -182,16 +203,16 @@ const REMOTE_MODULE = {
 // A type representing all the possible variants of a reducer.
 export type Reducer = never
 | { name: "AddUpgrade", args: AddUpgrade }
-| { name: "BuyStock", args: BuyStock }
 | { name: "BuyUpgrade", args: BuyUpgrade }
 | { name: "CreateStock", args: CreateStock }
+| { name: "CreateTransaction", args: CreateTransaction }
 | { name: "IdentityConnected", args: IdentityConnected }
 | { name: "IdentityDisconnected", args: IdentityDisconnected }
 | { name: "IncreaseMoney", args: IncreaseMoney }
-| { name: "SellStock", args: SellStock }
 | { name: "SetName", args: SetName }
 | { name: "UpdatePlayers", args: UpdatePlayers }
 | { name: "UpdateStockPrices", args: UpdateStockPrices }
+| { name: "UpdateTransactions", args: UpdateTransactions }
 ;
 
 export class RemoteReducers {
@@ -213,22 +234,6 @@ export class RemoteReducers {
     this.connection.offReducer("add_upgrade", callback);
   }
 
-  buyStock(stockId: number, amount: bigint) {
-    const __args = { stockId, amount };
-    let __writer = new BinaryWriter(1024);
-    BuyStock.getTypeScriptAlgebraicType().serialize(__writer, __args);
-    let __argsBuffer = __writer.getBuffer();
-    this.connection.callReducer("buy_stock", __argsBuffer, this.setCallReducerFlags.buyStockFlags);
-  }
-
-  onBuyStock(callback: (ctx: ReducerEventContext, stockId: number, amount: bigint) => void) {
-    this.connection.onReducer("buy_stock", callback);
-  }
-
-  removeOnBuyStock(callback: (ctx: ReducerEventContext, stockId: number, amount: bigint) => void) {
-    this.connection.offReducer("buy_stock", callback);
-  }
-
   buyUpgrade(upgradeId: number) {
     const __args = { upgradeId };
     let __writer = new BinaryWriter(1024);
@@ -245,20 +250,36 @@ export class RemoteReducers {
     this.connection.offReducer("buy_upgrade", callback);
   }
 
-  createStock(name: string, description: string, initialPrice: bigint, totalShares: bigint, volatility: number) {
-    const __args = { name, description, initialPrice, totalShares, volatility };
+  createStock(name: string, description: string, initialPrice: bigint, totalShares: bigint) {
+    const __args = { name, description, initialPrice, totalShares };
     let __writer = new BinaryWriter(1024);
     CreateStock.getTypeScriptAlgebraicType().serialize(__writer, __args);
     let __argsBuffer = __writer.getBuffer();
     this.connection.callReducer("create_stock", __argsBuffer, this.setCallReducerFlags.createStockFlags);
   }
 
-  onCreateStock(callback: (ctx: ReducerEventContext, name: string, description: string, initialPrice: bigint, totalShares: bigint, volatility: number) => void) {
+  onCreateStock(callback: (ctx: ReducerEventContext, name: string, description: string, initialPrice: bigint, totalShares: bigint) => void) {
     this.connection.onReducer("create_stock", callback);
   }
 
-  removeOnCreateStock(callback: (ctx: ReducerEventContext, name: string, description: string, initialPrice: bigint, totalShares: bigint, volatility: number) => void) {
+  removeOnCreateStock(callback: (ctx: ReducerEventContext, name: string, description: string, initialPrice: bigint, totalShares: bigint) => void) {
     this.connection.offReducer("create_stock", callback);
+  }
+
+  createTransaction(stockId: number, amount: bigint, txType: TransactionType) {
+    const __args = { stockId, amount, txType };
+    let __writer = new BinaryWriter(1024);
+    CreateTransaction.getTypeScriptAlgebraicType().serialize(__writer, __args);
+    let __argsBuffer = __writer.getBuffer();
+    this.connection.callReducer("create_transaction", __argsBuffer, this.setCallReducerFlags.createTransactionFlags);
+  }
+
+  onCreateTransaction(callback: (ctx: ReducerEventContext, stockId: number, amount: bigint, txType: TransactionType) => void) {
+    this.connection.onReducer("create_transaction", callback);
+  }
+
+  removeOnCreateTransaction(callback: (ctx: ReducerEventContext, stockId: number, amount: bigint, txType: TransactionType) => void) {
+    this.connection.offReducer("create_transaction", callback);
   }
 
   onIdentityConnected(callback: (ctx: ReducerEventContext) => void) {
@@ -287,22 +308,6 @@ export class RemoteReducers {
 
   removeOnIncreaseMoney(callback: (ctx: ReducerEventContext) => void) {
     this.connection.offReducer("increase_money", callback);
-  }
-
-  sellStock(stockId: number, amount: bigint) {
-    const __args = { stockId, amount };
-    let __writer = new BinaryWriter(1024);
-    SellStock.getTypeScriptAlgebraicType().serialize(__writer, __args);
-    let __argsBuffer = __writer.getBuffer();
-    this.connection.callReducer("sell_stock", __argsBuffer, this.setCallReducerFlags.sellStockFlags);
-  }
-
-  onSellStock(callback: (ctx: ReducerEventContext, stockId: number, amount: bigint) => void) {
-    this.connection.onReducer("sell_stock", callback);
-  }
-
-  removeOnSellStock(callback: (ctx: ReducerEventContext, stockId: number, amount: bigint) => void) {
-    this.connection.offReducer("sell_stock", callback);
   }
 
   setName(username: string) {
@@ -353,17 +358,24 @@ export class RemoteReducers {
     this.connection.offReducer("update_stock_prices", callback);
   }
 
+  updateTransactions() {
+    this.connection.callReducer("update_transactions", new Uint8Array(0), this.setCallReducerFlags.updateTransactionsFlags);
+  }
+
+  onUpdateTransactions(callback: (ctx: ReducerEventContext) => void) {
+    this.connection.onReducer("update_transactions", callback);
+  }
+
+  removeOnUpdateTransactions(callback: (ctx: ReducerEventContext) => void) {
+    this.connection.offReducer("update_transactions", callback);
+  }
+
 }
 
 export class SetReducerFlags {
   addUpgradeFlags: CallReducerFlags = 'FullUpdate';
   addUpgrade(flags: CallReducerFlags) {
     this.addUpgradeFlags = flags;
-  }
-
-  buyStockFlags: CallReducerFlags = 'FullUpdate';
-  buyStock(flags: CallReducerFlags) {
-    this.buyStockFlags = flags;
   }
 
   buyUpgradeFlags: CallReducerFlags = 'FullUpdate';
@@ -376,14 +388,14 @@ export class SetReducerFlags {
     this.createStockFlags = flags;
   }
 
+  createTransactionFlags: CallReducerFlags = 'FullUpdate';
+  createTransaction(flags: CallReducerFlags) {
+    this.createTransactionFlags = flags;
+  }
+
   increaseMoneyFlags: CallReducerFlags = 'FullUpdate';
   increaseMoney(flags: CallReducerFlags) {
     this.increaseMoneyFlags = flags;
-  }
-
-  sellStockFlags: CallReducerFlags = 'FullUpdate';
-  sellStock(flags: CallReducerFlags) {
-    this.sellStockFlags = flags;
   }
 
   setNameFlags: CallReducerFlags = 'FullUpdate';
@@ -401,10 +413,19 @@ export class SetReducerFlags {
     this.updateStockPricesFlags = flags;
   }
 
+  updateTransactionsFlags: CallReducerFlags = 'FullUpdate';
+  updateTransactions(flags: CallReducerFlags) {
+    this.updateTransactionsFlags = flags;
+  }
+
 }
 
 export class RemoteTables {
   constructor(private connection: DbConnectionImpl) {}
+
+  get marketConfig(): MarketConfigTableHandle {
+    return new MarketConfigTableHandle(this.connection.clientCache.getOrCreateTable<MarketConfig>(REMOTE_MODULE.tables.market_config));
+  }
 
   get player(): PlayerTableHandle {
     return new PlayerTableHandle(this.connection.clientCache.getOrCreateTable<Player>(REMOTE_MODULE.tables.player));
@@ -416,6 +437,10 @@ export class RemoteTables {
 
   get stockMarketSchedule(): StockMarketScheduleTableHandle {
     return new StockMarketScheduleTableHandle(this.connection.clientCache.getOrCreateTable<StockMarketSchedule>(REMOTE_MODULE.tables.stock_market_schedule));
+  }
+
+  get transaction(): TransactionTableHandle {
+    return new TransactionTableHandle(this.connection.clientCache.getOrCreateTable<Transaction>(REMOTE_MODULE.tables.transaction));
   }
 
   get updatePlayerSchedule(): UpdatePlayerScheduleTableHandle {

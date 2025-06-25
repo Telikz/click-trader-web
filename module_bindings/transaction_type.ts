@@ -30,34 +30,47 @@ import {
   Timestamp,
   deepEqual,
 } from "@clockworklabs/spacetimedb-sdk";
+import { TransactionType as __TransactionType } from "./transaction_type_type";
+import { TransactionStatus as __TransactionStatus } from "./transaction_status_type";
 
-export type BuyStock = {
+export type Transaction = {
+  id: number,
+  sender: Identity,
   stockId: number,
   amount: bigint,
+  txType: __TransactionType,
+  status: __TransactionStatus,
+  timestamp: Timestamp,
 };
 
 /**
  * A namespace for generated helper functions.
  */
-export namespace BuyStock {
+export namespace Transaction {
   /**
   * A function which returns this type represented as an AlgebraicType.
   * This function is derived from the AlgebraicType used to generate this type.
   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
+      new ProductTypeElement("id", AlgebraicType.createU16Type()),
+      new ProductTypeElement("sender", AlgebraicType.createIdentityType()),
       new ProductTypeElement("stockId", AlgebraicType.createU16Type()),
       new ProductTypeElement("amount", AlgebraicType.createU64Type()),
+      new ProductTypeElement("txType", __TransactionType.getTypeScriptAlgebraicType()),
+      new ProductTypeElement("status", __TransactionStatus.getTypeScriptAlgebraicType()),
+      new ProductTypeElement("timestamp", AlgebraicType.createTimestampType()),
     ]);
   }
 
-  export function serialize(writer: BinaryWriter, value: BuyStock): void {
-    BuyStock.getTypeScriptAlgebraicType().serialize(writer, value);
+  export function serialize(writer: BinaryWriter, value: Transaction): void {
+    Transaction.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
-  export function deserialize(reader: BinaryReader): BuyStock {
-    return BuyStock.getTypeScriptAlgebraicType().deserialize(reader);
+  export function deserialize(reader: BinaryReader): Transaction {
+    return Transaction.getTypeScriptAlgebraicType().deserialize(reader);
   }
 
 }
+
 

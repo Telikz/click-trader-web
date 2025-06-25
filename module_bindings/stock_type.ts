@@ -38,11 +38,8 @@ export type Stock = {
   totalShares: bigint,
   availableShares: bigint,
   lastPrice: bigint,
-  momentum: number,
-  volatility: number,
   recentBuys: bigint,
   recentSells: bigint,
-  trendingEvent: string | undefined,
 };
 
 /**
@@ -62,11 +59,8 @@ export namespace Stock {
       new ProductTypeElement("totalShares", AlgebraicType.createU64Type()),
       new ProductTypeElement("availableShares", AlgebraicType.createU64Type()),
       new ProductTypeElement("lastPrice", AlgebraicType.createU128Type()),
-      new ProductTypeElement("momentum", AlgebraicType.createI32Type()),
-      new ProductTypeElement("volatility", AlgebraicType.createU8Type()),
       new ProductTypeElement("recentBuys", AlgebraicType.createU64Type()),
       new ProductTypeElement("recentSells", AlgebraicType.createU64Type()),
-      new ProductTypeElement("trendingEvent", AlgebraicType.createOptionType(AlgebraicType.createStringType())),
     ]);
   }
 
