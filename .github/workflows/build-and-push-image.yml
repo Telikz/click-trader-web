@@ -48,6 +48,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VITE_CLERK_PUBLISHABLE_KEY=${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+            CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
       
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
