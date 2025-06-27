@@ -9,6 +9,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@clerk/tanstack-react-start": "^0.18.1",
     "@clockworklabs/spacetimedb-sdk": "^1.2.1",
     "@tailwindcss/postcss": "^4.1.8",
     "@tanstack/react-query": "^5.79.0",

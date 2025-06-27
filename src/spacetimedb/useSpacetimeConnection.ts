@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { DbConnection, ErrorContext } from "../../module_bindings";
 import { Identity } from "@clockworklabs/spacetimedb-sdk";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 interface SpacetimeState {
    connected: boolean;
@@ -17,49 +18,61 @@ export const useSpacetime = create<SpacetimeState>(() => ({
 
 export function useSpacetimeConnection() {
    const setState = useSpacetime.setState;
+   const { getToken } = useAuth();
+   const { user, isLoaded, isSignedIn } = useUser();
 
    useEffect(() => {
-      const onConnect = (
-         conn: DbConnection,
-         identity: Identity,
-         token: string
-      ) => {
-         setState({ connected: true, identity });
-         localStorage.setItem("auth_token", token);
-         console.log("Connected:", identity.toHexString());
+      if (!isLoaded) return;
+      if (!isSignedIn) return;
 
-         conn
-            .subscriptionBuilder()
-            .onApplied(() => console.log("SDK cache initialized"))
-            .subscribe([
-               "SELECT * FROM player",
-               "SELECT * FROM upgrades",
-               "SELECT * FROM stock",
-            ]);
+      const connectToSpacetime = async () => {
+         try {
+            const token = await getToken();
+            if (!token) throw new Error("No token from Clerk");
+
+            const onConnect = (conn: DbConnection, identity: Identity) => {
+               setState({ connected: true, identity });
+               console.log("Connected:", identity.toHexString());
+
+               conn
+                  .subscriptionBuilder()
+                  .onApplied(() => console.log("SDK cache initialized"))
+                  .subscribe([
+                     "SELECT * FROM player",
+                     "SELECT * FROM upgrades",
+                     "SELECT * FROM stock",
+                  ]);
+               conn.reducers.setName(user?.username || "Unknown");
+            };
+
+            const onDisconnect = () => {
+               console.log("Disconnected from SpaceTimeDB");
+               setState({ connected: false });
+            };
+
+            const onConnectError = (_ctx: ErrorContext, err: Error) => {
+               console.log("Connection error:", err);
+            };
+
+            const conn = DbConnection.builder()
+               .withUri(
+                  import.meta.env.PROD
+                     ? "wss://spacetimedb.minmaxing.net"
+                     : "ws://localhost:3001"
+               )
+               .withModuleName("test")
+               .withToken(token)
+               .onConnect(onConnect)
+               .onDisconnect(onDisconnect)
+               .onConnectError(onConnectError)
+               .build();
+
+            setState({ conn });
+         } catch (err) {
+            console.error("Failed to connect to SpaceTimeDB:", err);
+         }
       };
 
-      const onDisconnect = () => {
-         console.log("Disconnected from SpaceTimeDB");
-         setState({ connected: false });
-      };
-
-      const onConnectError = (_ctx: ErrorContext, err: Error) => {
-         console.log("Connection error:", err);
-      };
-
-      const conn = DbConnection.builder()
-         .withUri(
-            import.meta.env.PROD
-               ? "wss://spacetimedb.minmaxing.net"
-               : "ws://localhost:3001"
-         )
-         .withModuleName("test")
-         .withToken(localStorage.getItem("auth_token") || "")
-         .onConnect(onConnect)
-         .onDisconnect(onDisconnect)
-         .onConnectError(onConnectError)
-         .build();
-
-      setState({ conn });
-   }, [setState]);
+      connectToSpacetime();
+   }, [isSignedIn, getToken, setState]);
 }
