@@ -4,12 +4,18 @@ import { usePlayerStore } from "~/stores/usePlayerStore";
 import SpacetimeLoading from "~/components/SpacetimeLoading";
 import ClickField from "~/components/ClickField";
 import UpgradesList from "~/components/upgrades/UpgradesList";
-import PlayerHeader from "~/components/player/PlayerHeader";
 import { Leaderboards } from "~/components/Leaderboards";
 import { useLockedUpgrades } from "~/stores/useUpgradeStore";
 import BalanceCard from "~/components/player/BalanceCard";
-import NavBar from "~/components/NavBar";
 import PortfolioCard from "~/components/player/PortfolioCard";
+import {
+   SignedIn,
+   UserButton,
+   SignOutButton,
+   SignedOut,
+   SignInButton,
+   SignUpButton,
+} from "@clerk/tanstack-react-start";
 
 export const Route = createFileRoute("/")({
    component: Home,
@@ -21,7 +27,25 @@ function Home() {
    const upgrades = useLockedUpgrades();
 
    if (!connected || !conn || !identity || !currentPlayer) {
-      return <SpacetimeLoading />;
+      return (
+         <div>
+            <SpacetimeLoading />{" "}
+            <SignedIn>
+               <p>You are signed in</p>
+
+               <UserButton />
+
+               <SignOutButton />
+            </SignedIn>
+            <SignedOut>
+               <p>You are signed out</p>
+
+               <SignInButton />
+
+               <SignUpButton />
+            </SignedOut>
+         </div>
+      );
    }
 
    return (

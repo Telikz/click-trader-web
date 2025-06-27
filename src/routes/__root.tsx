@@ -17,6 +17,7 @@ import { usePlayerSync } from "~/spacetimedb/usePlayerSync";
 import { useUpgradeSync } from "~/spacetimedb/useUpgradeSync";
 import NavBar from "~/components/NavBar";
 import { useStockSync } from "~/spacetimedb/useStockSync";
+import { ClerkProvider } from "@clerk/tanstack-react-start";
 
 export const Route = createRootRouteWithContext<{
    queryClient: QueryClient;
@@ -71,9 +72,11 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
    return (
-      <RootDocument>
-         <Outlet />
-      </RootDocument>
+      <ClerkProvider>
+         <RootDocument>
+            <Outlet />
+         </RootDocument>
+      </ClerkProvider>
    );
 }
 

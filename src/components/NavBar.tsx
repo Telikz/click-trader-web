@@ -1,4 +1,9 @@
 import { Link } from "@tanstack/react-router";
+import {
+   SignedIn,
+   SignOutButton,
+   UserButton,
+} from "@clerk/tanstack-react-start";
 
 export default function NavBar() {
    return (
@@ -8,6 +13,10 @@ export default function NavBar() {
          <Link to={"/leaderboards"}>LEADERBOARDS</Link>
          <Link to={"/upgrades"}>UPGRADES</Link>
          <Link to={"/profile"}>PROFILE</Link>
+         <SignedIn>
+            <UserButton />
+            <SignOutButton />
+         </SignedIn>
       </div>
    );
 }

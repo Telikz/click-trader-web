@@ -68,23 +68,25 @@ export default function StockList({ stocks }: { stocks: Stock[] }) {
                                  <span className="block">
                                     + Buy Fee:{" "}
                                     <span className="font-bold text-primary">
-                                       $
-                                       {(
-                                          (Number(stock.pricePerShare) *
-                                             currentPlayer.stockBuyFee) /
-                                          1000000
-                                       ).toFixed(3)}
+                                       {formatBigInt(
+                                          (stock.pricePerShare *
+                                             BigInt(
+                                                currentPlayer.stockBuyFee
+                                             )) /
+                                             1000n
+                                       )}
                                     </span>
                                  </span>
                                  <span className="block">
                                     + Sell Fee:{" "}
                                     <span className="font-bold text-primary">
-                                       $
-                                       {(
-                                          (Number(stock.pricePerShare) *
-                                             currentPlayer.stockSellFee) /
-                                          1000000
-                                       ).toFixed(3)}
+                                       {formatBigInt(
+                                          (stock.pricePerShare *
+                                             BigInt(
+                                                currentPlayer.stockSellFee
+                                             )) /
+                                             1000n
+                                       )}
                                     </span>
                                  </span>
                               </p>
