@@ -77,4 +77,8 @@ web_modules/
 # public/
 
 click-trader-server
+.tanstack
+.github
+.idea
+.nitro
 

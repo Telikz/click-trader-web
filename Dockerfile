@@ -1,4 +1,4 @@
-FROM oven/bun:alpine AS builder
+FROM node:24.3.0-alpine3.22 AS builder
 
 WORKDIR /app
 
@@ -8,22 +8,23 @@ ARG CLERK_SECRET_KEY
 ENV VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
 ENV CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
 
+COPY package.json ./
+
+RUN npm install
+
 COPY . .
 
-RUN bun install
-RUN bun run build
+RUN npm run build
 
-# Runtime stage using Node.js
-FROM node:20-alpine AS runtime
+FROM node:24.3.0-alpine3.22 AS runtime
 
 WORKDIR /app
 
-# Copy only what's needed to run the server
-COPY --from=builder /app/.output /app/.output
 COPY --from=builder /app/package.json /app/package.json
 
-# Install only production dependencies using npm
 RUN npm install --omit=dev
+
+COPY --from=builder /app/.output /app/.output
 
 EXPOSE 3000
 
