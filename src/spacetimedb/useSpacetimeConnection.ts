@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { create } from "zustand";
 import { DbConnection, ErrorContext } from "../../module_bindings";
 import { Identity } from "@clockworklabs/spacetimedb-sdk";
@@ -21,58 +21,79 @@ export function useSpacetimeConnection() {
    const { getToken } = useAuth();
    const { user, isLoaded, isSignedIn } = useUser();
 
+   const connectToSpacetime = useCallback(async () => {
+      try {
+         const token = await getToken();
+         if (!token) throw new Error("No token from Clerk");
+
+         const onConnect = (conn: DbConnection, identity: Identity) => {
+            setState({ connected: true, identity, conn });
+            console.log("Connected:", identity.toHexString());
+
+            conn
+               .subscriptionBuilder()
+               .onApplied(() => console.log("SDK cache initialized"))
+               .subscribe([
+                  "SELECT * FROM player",
+                  "SELECT * FROM upgrades",
+                  "SELECT * FROM stock",
+               ]);
+            conn.reducers.setName(user?.username || "Unknown");
+         };
+
+         const onDisconnect = () => {
+            console.log("Disconnected from SpaceTimeDB");
+            setState({ connected: false });
+         };
+
+         const onConnectError = (_ctx: ErrorContext, err: Error) => {
+            console.log("Connection error:", err);
+         };
+
+         const conn = DbConnection.builder()
+            .withUri(
+               import.meta.env.PROD
+                  ? "wss://spacetimedb.minmaxing.net"
+                  : "ws://localhost:3001"
+            )
+            .withModuleName("test")
+            .withToken(token)
+            .onConnect(onConnect)
+            .onDisconnect(onDisconnect)
+            .onConnectError(onConnectError)
+            .build();
+
+         setState({ conn });
+      } catch (err) {
+         console.error("Failed to connect to SpaceTimeDB:", err);
+      }
+   }, [getToken, setState, user?.username]);
+
    useEffect(() => {
-      if (!isLoaded) return;
-      if (!isSignedIn) return;
+      if (!isLoaded || !isSignedIn) return;
 
-      const connectToSpacetime = async () => {
-         try {
-            const token = await getToken();
-            if (!token) throw new Error("No token from Clerk");
+      connectToSpacetime();
 
-            const onConnect = (conn: DbConnection, identity: Identity) => {
-               setState({ connected: true, identity });
-               console.log("Connected:", identity.toHexString());
-
-               conn
-                  .subscriptionBuilder()
-                  .onApplied(() => console.log("SDK cache initialized"))
-                  .subscribe([
-                     "SELECT * FROM player",
-                     "SELECT * FROM upgrades",
-                     "SELECT * FROM stock",
-                  ]);
-               conn.reducers.setName(user?.username || "Unknown");
-            };
-
-            const onDisconnect = () => {
-               console.log("Disconnected from SpaceTimeDB");
-               setState({ connected: false });
-            };
-
-            const onConnectError = (_ctx: ErrorContext, err: Error) => {
-               console.log("Connection error:", err);
-            };
-
-            const conn = DbConnection.builder()
-               .withUri(
-                  import.meta.env.PROD
-                     ? "wss://spacetimedb.minmaxing.net"
-                     : "ws://localhost:3001"
-               )
-               .withModuleName("test")
-               .withToken(token)
-               .onConnect(onConnect)
-               .onDisconnect(onDisconnect)
-               .onConnectError(onConnectError)
-               .build();
-
-            setState({ conn });
-         } catch (err) {
-            console.error("Failed to connect to SpaceTimeDB:", err);
+      const handleFocus = () => {
+         if (!useSpacetime.getState().connected) {
+            console.log("Reconnecting on focus...");
+            connectToSpacetime();
          }
       };
 
-      connectToSpacetime();
-   }, [isSignedIn, getToken, setState]);
+      const handleOnline = () => {
+         if (!useSpacetime.getState().connected) {
+            console.log("Reconnecting on coming online...");
+            connectToSpacetime();
+         }
+      };
+
+      window.addEventListener("focus", handleFocus);
+      window.addEventListener("online", handleOnline);
+
+      return () => {
+         window.removeEventListener("focus", handleFocus);
+         window.removeEventListener("online", handleOnline);
+      };
+   }, [isLoaded, isSignedIn, connectToSpacetime]);
 }
