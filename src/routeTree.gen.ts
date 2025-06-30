@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UpgradesRouteImport } from './routes/upgrades'
 import { Route as TradingRouteImport } from './routes/trading'
-import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as StatsRouteImport } from './routes/stats'
 import { Route as LeaderboardsRouteImport } from './routes/leaderboards'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -25,9 +25,9 @@ const TradingRoute = TradingRouteImport.update({
   path: '/trading',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
+const StatsRoute = StatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeaderboardsRoute = LeaderboardsRouteImport.update({
@@ -44,14 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/leaderboards': typeof LeaderboardsRoute
-  '/profile': typeof ProfileRoute
+  '/stats': typeof StatsRoute
   '/trading': typeof TradingRoute
   '/upgrades': typeof UpgradesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/leaderboards': typeof LeaderboardsRoute
-  '/profile': typeof ProfileRoute
+  '/stats': typeof StatsRoute
   '/trading': typeof TradingRoute
   '/upgrades': typeof UpgradesRoute
 }
@@ -59,22 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/leaderboards': typeof LeaderboardsRoute
-  '/profile': typeof ProfileRoute
+  '/stats': typeof StatsRoute
   '/trading': typeof TradingRoute
   '/upgrades': typeof UpgradesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/leaderboards' | '/profile' | '/trading' | '/upgrades'
+  fullPaths: '/' | '/leaderboards' | '/stats' | '/trading' | '/upgrades'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leaderboards' | '/profile' | '/trading' | '/upgrades'
-  id: '__root__' | '/' | '/leaderboards' | '/profile' | '/trading' | '/upgrades'
+  to: '/' | '/leaderboards' | '/stats' | '/trading' | '/upgrades'
+  id: '__root__' | '/' | '/leaderboards' | '/stats' | '/trading' | '/upgrades'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LeaderboardsRoute: typeof LeaderboardsRoute
-  ProfileRoute: typeof ProfileRoute
+  StatsRoute: typeof StatsRoute
   TradingRoute: typeof TradingRoute
   UpgradesRoute: typeof UpgradesRoute
 }
@@ -95,11 +95,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TradingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leaderboards': {
@@ -122,7 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LeaderboardsRoute: LeaderboardsRoute,
-  ProfileRoute: ProfileRoute,
+  StatsRoute: StatsRoute,
   TradingRoute: TradingRoute,
   UpgradesRoute: UpgradesRoute,
 }

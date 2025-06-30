@@ -2,6 +2,7 @@ import { useSpacetime } from "~/spacetimedb/useSpacetimeConnection";
 import { usePlayerStore } from "~/stores/usePlayerStore";
 import { Upgrades } from "../../../module_bindings";
 import { formatBigInt } from "~/utils/formatBigInt";
+import { Link } from "@tanstack/react-router";
 
 export default function UpgradesList({ upgrades }: { upgrades: Upgrades[] }) {
    const { conn } = useSpacetime();
@@ -18,7 +19,7 @@ export default function UpgradesList({ upgrades }: { upgrades: Upgrades[] }) {
    return (
       <div className="flex-2 bg-base-100 rounded-lg shadow-lg p-4 flex-col items-center justify-center">
          <h3 className="text-3xl font-semibold mb-6 text-primary text-center">
-            Available Upgrades
+            <Link to="/upgrades">Available Upgrades</Link>
          </h3>
          {availableUpgrades.length > 0 ? (
             <ul className="space-y-4 overflow-auto h-96">
