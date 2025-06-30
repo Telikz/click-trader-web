@@ -83,7 +83,6 @@ function RootDocument({ children }: { children: ReactNode }) {
       <html>
          <head>
             <HeadContent />
-            <title>Click Trader</title>
          </head>
          <body>
             <Layout>{children}</Layout>
