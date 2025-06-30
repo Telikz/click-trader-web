@@ -1,6 +1,7 @@
 import { usePlayerStore } from "~/stores/usePlayerStore";
 import { formatBigInt } from "~/utils/formatBigInt";
 import { useSpacetime } from "~/spacetimedb/useSpacetimeConnection";
+import { Link } from "@tanstack/react-router";
 
 export function Leaderboards() {
    const { identity } = useSpacetime();
@@ -12,7 +13,7 @@ export function Leaderboards() {
    return (
       <div className="flex-1 bg-base-100 rounded-2xl shadow-xl p-6 flex flex-col items-center h-96">
          <h3 className="text-3xl font-bold mb-6 text-primary text-center">
-            Leaderboards
+            <Link to="/leaderboards">Leaderboards</Link>
          </h3>
 
          {players.length > 0 ? (

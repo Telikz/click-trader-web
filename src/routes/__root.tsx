@@ -12,11 +12,6 @@ import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
-import { useSpacetimeConnection } from "~/spacetimedb/useSpacetimeConnection";
-import { usePlayerSync } from "~/spacetimedb/usePlayerSync";
-import { useUpgradeSync } from "~/spacetimedb/useUpgradeSync";
-import NavBar from "~/components/NavBar";
-import { useStockSync } from "~/spacetimedb/useStockSync";
 import { ClerkProvider } from "@clerk/tanstack-react-start";
 
 export const Route = createRootRouteWithContext<{
@@ -80,19 +75,18 @@ function RootComponent() {
    );
 }
 
-function RootDocument({ children }: { children: React.ReactNode }) {
-   useSpacetimeConnection();
-   usePlayerSync();
-   useUpgradeSync();
-   useStockSync();
+import { Layout } from "~/components/Layout";
+import { ReactNode } from "react";
+
+function RootDocument({ children }: { children: ReactNode }) {
    return (
       <html>
          <head>
             <HeadContent />
+            <title>Click Trader</title>
          </head>
          <body>
-            <NavBar />
-            {children}
+            <Layout>{children}</Layout>
             <TanStackRouterDevtools position="bottom-right" />
             <ReactQueryDevtools buttonPosition="bottom-left" />
             <Scripts />
