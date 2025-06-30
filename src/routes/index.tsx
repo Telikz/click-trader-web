@@ -20,7 +20,7 @@ function Home() {
       <>
          <SignedIn>
             <AppLayout>
-               <div className="min-h-screen bg-base-200 p-4 flex flex-col items-center gap-6">
+               <div className="min-h-screen bg-base-200 pb-4 px-4 flex flex-col items-center gap-6">
                   <BalanceCard />
                   <div className="w-full flex flex-col lg:flex-row gap-6">
                      <ClickField />
