@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { DbConnection, ErrorContext } from "../../module_bindings";
 import { Identity } from "@clockworklabs/spacetimedb-sdk";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/tanstack-react-start";
 
 interface SpacetimeState {
    connected: boolean;
