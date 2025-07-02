@@ -7,14 +7,13 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  type BinaryReader,
-  type BinaryWriter,
+  BinaryReader,
+  BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
-  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -29,10 +28,11 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-} from '@clockworklabs/spacetimedb-sdk';
+  deepEqual,
+} from "@clockworklabs/spacetimedb-sdk";
 
 export type SetName = {
-  username: string;
+  username: string,
 };
 
 /**
@@ -40,12 +40,12 @@ export type SetName = {
  */
 export namespace SetName {
   /**
-   * A function which returns this type represented as an AlgebraicType.
-   * This function is derived from the AlgebraicType used to generate this type.
-   */
+  * A function which returns this type represented as an AlgebraicType.
+  * This function is derived from the AlgebraicType used to generate this type.
+  */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement('username', AlgebraicType.createStringType()),
+      new ProductTypeElement("username", AlgebraicType.createStringType()),
     ]);
   }
 
@@ -56,4 +56,6 @@ export namespace SetName {
   export function deserialize(reader: BinaryReader): SetName {
     return SetName.getTypeScriptAlgebraicType().deserialize(reader);
   }
+
 }
+

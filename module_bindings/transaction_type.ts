@@ -7,18 +7,17 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  type BinaryReader,
-  type BinaryWriter,
+  BinaryReader,
+  BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
-  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
-  type Identity,
+  Identity,
   ProductType,
   ProductTypeElement,
   ReducerEventContextInterface,
@@ -28,19 +27,20 @@ import {
   SumTypeVariant,
   TableCache,
   TimeDuration,
-  type Timestamp,
-} from '@clockworklabs/spacetimedb-sdk';
-import { TransactionStatus as __TransactionStatus } from './transaction_status_type';
-import { TransactionType as __TransactionType } from './transaction_type_type';
+  Timestamp,
+  deepEqual,
+} from "@clockworklabs/spacetimedb-sdk";
+import { TransactionType as __TransactionType } from "./transaction_type_type";
+import { TransactionStatus as __TransactionStatus } from "./transaction_status_type";
 
 export type Transaction = {
-  id: number;
-  sender: Identity;
-  stockId: number;
-  amount: bigint;
-  txType: __TransactionType;
-  status: __TransactionStatus;
-  timestamp: Timestamp;
+  id: number,
+  sender: Identity,
+  stockId: number,
+  amount: bigint,
+  txType: __TransactionType,
+  status: __TransactionStatus,
+  timestamp: Timestamp,
 };
 
 /**
@@ -48,24 +48,18 @@ export type Transaction = {
  */
 export namespace Transaction {
   /**
-   * A function which returns this type represented as an AlgebraicType.
-   * This function is derived from the AlgebraicType used to generate this type.
-   */
+  * A function which returns this type represented as an AlgebraicType.
+  * This function is derived from the AlgebraicType used to generate this type.
+  */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement('id', AlgebraicType.createU16Type()),
-      new ProductTypeElement('sender', AlgebraicType.createIdentityType()),
-      new ProductTypeElement('stockId', AlgebraicType.createU16Type()),
-      new ProductTypeElement('amount', AlgebraicType.createU64Type()),
-      new ProductTypeElement(
-        'txType',
-        __TransactionType.getTypeScriptAlgebraicType()
-      ),
-      new ProductTypeElement(
-        'status',
-        __TransactionStatus.getTypeScriptAlgebraicType()
-      ),
-      new ProductTypeElement('timestamp', AlgebraicType.createTimestampType()),
+      new ProductTypeElement("id", AlgebraicType.createU16Type()),
+      new ProductTypeElement("sender", AlgebraicType.createIdentityType()),
+      new ProductTypeElement("stockId", AlgebraicType.createU16Type()),
+      new ProductTypeElement("amount", AlgebraicType.createU64Type()),
+      new ProductTypeElement("txType", __TransactionType.getTypeScriptAlgebraicType()),
+      new ProductTypeElement("status", __TransactionStatus.getTypeScriptAlgebraicType()),
+      new ProductTypeElement("timestamp", AlgebraicType.createTimestampType()),
     ]);
   }
 
@@ -76,4 +70,7 @@ export namespace Transaction {
   export function deserialize(reader: BinaryReader): Transaction {
     return Transaction.getTypeScriptAlgebraicType().deserialize(reader);
   }
+
 }
+
+

@@ -7,14 +7,13 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  type BinaryReader,
-  type BinaryWriter,
+  BinaryReader,
+  BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
-  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -29,14 +28,15 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-} from '@clockworklabs/spacetimedb-sdk';
+  deepEqual,
+} from "@clockworklabs/spacetimedb-sdk";
 // A namespace for generated variants and helper functions.
 export namespace TransactionType {
   // These are the generated variant types for each variant of the tagged union.
   // One type is generated per variant and will be used in the `value` field of
   // the tagged union.
-  export type Buy = { tag: 'Buy' };
-  export type Sell = { tag: 'Sell' };
+  export type Buy = { tag: "Buy" };
+  export type Sell = { tag: "Sell" };
 
   // Helper functions for constructing each variant of the tagged union.
   // ```
@@ -44,29 +44,28 @@ export namespace TransactionType {
   // assert!(foo.tag === "A");
   // assert!(foo.value === 42);
   // ```
-  export const Buy = { tag: 'Buy' };
-  export const Sell = { tag: 'Sell' };
+  export const Buy = { tag: "Buy" };
+  export const Sell = { tag: "Sell" };
 
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createSumType([
-      new SumTypeVariant('Buy', AlgebraicType.createProductType([])),
-      new SumTypeVariant('Sell', AlgebraicType.createProductType([])),
+      new SumTypeVariant("Buy", AlgebraicType.createProductType([])),
+      new SumTypeVariant("Sell", AlgebraicType.createProductType([])),
     ]);
   }
 
-  export function serialize(
-    writer: BinaryWriter,
-    value: TransactionType
-  ): void {
-    TransactionType.getTypeScriptAlgebraicType().serialize(writer, value);
+  export function serialize(writer: BinaryWriter, value: TransactionType): void {
+      TransactionType.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
   export function deserialize(reader: BinaryReader): TransactionType {
-    return TransactionType.getTypeScriptAlgebraicType().deserialize(reader);
+      return TransactionType.getTypeScriptAlgebraicType().deserialize(reader);
   }
+
 }
 
 // The tagged union or sum type for the algebraic type `TransactionType`.
 export type TransactionType = TransactionType.Buy | TransactionType.Sell;
 
 export default TransactionType;
+

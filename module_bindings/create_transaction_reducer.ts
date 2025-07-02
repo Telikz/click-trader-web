@@ -7,14 +7,13 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  type BinaryReader,
-  type BinaryWriter,
+  BinaryReader,
+  BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
-  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -29,14 +28,15 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-} from '@clockworklabs/spacetimedb-sdk';
+  deepEqual,
+} from "@clockworklabs/spacetimedb-sdk";
 
-import { TransactionType as __TransactionType } from './transaction_type_type';
+import { TransactionType as __TransactionType } from "./transaction_type_type";
 
 export type CreateTransaction = {
-  stockId: number;
-  amount: bigint;
-  txType: __TransactionType;
+  stockId: number,
+  amount: bigint,
+  txType: __TransactionType,
 };
 
 /**
@@ -44,28 +44,24 @@ export type CreateTransaction = {
  */
 export namespace CreateTransaction {
   /**
-   * A function which returns this type represented as an AlgebraicType.
-   * This function is derived from the AlgebraicType used to generate this type.
-   */
+  * A function which returns this type represented as an AlgebraicType.
+  * This function is derived from the AlgebraicType used to generate this type.
+  */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement('stockId', AlgebraicType.createU16Type()),
-      new ProductTypeElement('amount', AlgebraicType.createU64Type()),
-      new ProductTypeElement(
-        'txType',
-        __TransactionType.getTypeScriptAlgebraicType()
-      ),
+      new ProductTypeElement("stockId", AlgebraicType.createU16Type()),
+      new ProductTypeElement("amount", AlgebraicType.createU64Type()),
+      new ProductTypeElement("txType", __TransactionType.getTypeScriptAlgebraicType()),
     ]);
   }
 
-  export function serialize(
-    writer: BinaryWriter,
-    value: CreateTransaction
-  ): void {
+  export function serialize(writer: BinaryWriter, value: CreateTransaction): void {
     CreateTransaction.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
   export function deserialize(reader: BinaryReader): CreateTransaction {
     return CreateTransaction.getTypeScriptAlgebraicType().deserialize(reader);
   }
+
 }
+

@@ -7,14 +7,13 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  type BinaryReader,
-  type BinaryWriter,
+  BinaryReader,
+  BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
-  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -29,10 +28,11 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-} from '@clockworklabs/spacetimedb-sdk';
+  deepEqual,
+} from "@clockworklabs/spacetimedb-sdk";
 export type StockType = {
-  stockId: number;
-  amount: bigint;
+  stockId: number,
+  amount: bigint,
 };
 
 /**
@@ -40,13 +40,13 @@ export type StockType = {
  */
 export namespace StockType {
   /**
-   * A function which returns this type represented as an AlgebraicType.
-   * This function is derived from the AlgebraicType used to generate this type.
-   */
+  * A function which returns this type represented as an AlgebraicType.
+  * This function is derived from the AlgebraicType used to generate this type.
+  */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement('stockId', AlgebraicType.createU16Type()),
-      new ProductTypeElement('amount', AlgebraicType.createU64Type()),
+      new ProductTypeElement("stockId", AlgebraicType.createU16Type()),
+      new ProductTypeElement("amount", AlgebraicType.createU64Type()),
     ]);
   }
 
@@ -57,4 +57,7 @@ export namespace StockType {
   export function deserialize(reader: BinaryReader): StockType {
     return StockType.getTypeScriptAlgebraicType().deserialize(reader);
   }
+
 }
+
+

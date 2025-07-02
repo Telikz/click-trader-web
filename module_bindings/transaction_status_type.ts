@@ -7,14 +7,13 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  type BinaryReader,
-  type BinaryWriter,
+  BinaryReader,
+  BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
-  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -29,15 +28,16 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-} from '@clockworklabs/spacetimedb-sdk';
+  deepEqual,
+} from "@clockworklabs/spacetimedb-sdk";
 // A namespace for generated variants and helper functions.
 export namespace TransactionStatus {
   // These are the generated variant types for each variant of the tagged union.
   // One type is generated per variant and will be used in the `value` field of
   // the tagged union.
-  export type Pending = { tag: 'Pending' };
-  export type Confirmed = { tag: 'Confirmed' };
-  export type Rejected = { tag: 'Rejected' };
+  export type Pending = { tag: "Pending" };
+  export type Confirmed = { tag: "Confirmed" };
+  export type Rejected = { tag: "Rejected" };
 
   // Helper functions for constructing each variant of the tagged union.
   // ```
@@ -45,34 +45,30 @@ export namespace TransactionStatus {
   // assert!(foo.tag === "A");
   // assert!(foo.value === 42);
   // ```
-  export const Pending = { tag: 'Pending' };
-  export const Confirmed = { tag: 'Confirmed' };
-  export const Rejected = { tag: 'Rejected' };
+  export const Pending = { tag: "Pending" };
+  export const Confirmed = { tag: "Confirmed" };
+  export const Rejected = { tag: "Rejected" };
 
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createSumType([
-      new SumTypeVariant('Pending', AlgebraicType.createProductType([])),
-      new SumTypeVariant('Confirmed', AlgebraicType.createProductType([])),
-      new SumTypeVariant('Rejected', AlgebraicType.createProductType([])),
+      new SumTypeVariant("Pending", AlgebraicType.createProductType([])),
+      new SumTypeVariant("Confirmed", AlgebraicType.createProductType([])),
+      new SumTypeVariant("Rejected", AlgebraicType.createProductType([])),
     ]);
   }
 
-  export function serialize(
-    writer: BinaryWriter,
-    value: TransactionStatus
-  ): void {
-    TransactionStatus.getTypeScriptAlgebraicType().serialize(writer, value);
+  export function serialize(writer: BinaryWriter, value: TransactionStatus): void {
+      TransactionStatus.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
   export function deserialize(reader: BinaryReader): TransactionStatus {
-    return TransactionStatus.getTypeScriptAlgebraicType().deserialize(reader);
+      return TransactionStatus.getTypeScriptAlgebraicType().deserialize(reader);
   }
+
 }
 
 // The tagged union or sum type for the algebraic type `TransactionStatus`.
-export type TransactionStatus =
-  | TransactionStatus.Pending
-  | TransactionStatus.Confirmed
-  | TransactionStatus.Rejected;
+export type TransactionStatus = TransactionStatus.Pending | TransactionStatus.Confirmed | TransactionStatus.Rejected;
 
 export default TransactionStatus;
+

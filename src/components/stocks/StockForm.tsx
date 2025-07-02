@@ -9,6 +9,7 @@ export default function StockForm() {
     description: '',
     initial_price: 0n,
     total_shares: 0n,
+    volatility: 0n,
   });
 
   const [status, setStatus] = useState<string | null>(null);
@@ -24,6 +25,7 @@ export default function StockForm() {
       switch (name) {
         case 'initial_price':
         case 'total_shares':
+        case 'volatility':
           newForm[name] = BigInt(value || '0');
           break;
         default:
@@ -49,7 +51,8 @@ export default function StockForm() {
       form.name,
       form.description,
       form.initial_price,
-      form.total_shares
+      form.total_shares,
+      form.volatility
     );
 
     setStatus(`✅ Stock "${form.name}" submitted for creation!`);
@@ -58,6 +61,7 @@ export default function StockForm() {
       description: '',
       initial_price: 0n,
       total_shares: 0n,
+      volatility: 0n,
     });
   };
 
@@ -94,6 +98,14 @@ export default function StockForm() {
         placeholder="Total Shares"
         type="number"
         value={form.total_shares.toString()}
+      />
+      <input
+        className="rounded border p-2"
+        name="volatility"
+        onChange={handleChange}
+        placeholder="Volatility"
+        type="number"
+        value={form.volatility.toString()}
       />
       <button
         className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400"

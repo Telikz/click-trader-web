@@ -7,14 +7,13 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  type BinaryReader,
-  type BinaryWriter,
+  BinaryReader,
+  BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
-  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -27,14 +26,13 @@ import {
   SumType,
   SumTypeVariant,
   TableCache,
-  type TimeDuration,
-  type Timestamp,
-} from '@clockworklabs/spacetimedb-sdk';
+  TimeDuration,
+  Timestamp,
+  deepEqual,
+} from "@clockworklabs/spacetimedb-sdk";
 export type UpdatePlayersSchedule = {
-  id: bigint;
-  scheduledAt:
-    | { tag: 'Interval'; value: TimeDuration }
-    | { tag: 'Time'; value: Timestamp };
+  id: bigint,
+  scheduledAt: { tag: "Interval", value: TimeDuration } | { tag: "Time", value: Timestamp },
 };
 
 /**
@@ -42,29 +40,24 @@ export type UpdatePlayersSchedule = {
  */
 export namespace UpdatePlayersSchedule {
   /**
-   * A function which returns this type represented as an AlgebraicType.
-   * This function is derived from the AlgebraicType used to generate this type.
-   */
+  * A function which returns this type represented as an AlgebraicType.
+  * This function is derived from the AlgebraicType used to generate this type.
+  */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement('id', AlgebraicType.createU64Type()),
-      new ProductTypeElement(
-        'scheduledAt',
-        AlgebraicType.createScheduleAtType()
-      ),
+      new ProductTypeElement("id", AlgebraicType.createU64Type()),
+      new ProductTypeElement("scheduledAt", AlgebraicType.createScheduleAtType()),
     ]);
   }
 
-  export function serialize(
-    writer: BinaryWriter,
-    value: UpdatePlayersSchedule
-  ): void {
+  export function serialize(writer: BinaryWriter, value: UpdatePlayersSchedule): void {
     UpdatePlayersSchedule.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
   export function deserialize(reader: BinaryReader): UpdatePlayersSchedule {
-    return UpdatePlayersSchedule.getTypeScriptAlgebraicType().deserialize(
-      reader
-    );
+    return UpdatePlayersSchedule.getTypeScriptAlgebraicType().deserialize(reader);
   }
+
 }
+
+
