@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,12 +29,11 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 export type MarketConfig = {
-  sensitivity: bigint,
-  slippageFactor: bigint,
-  minPrice: bigint,
+  sensitivity: bigint;
+  slippageFactor: bigint;
+  minPrice: bigint;
 };
 
 /**
@@ -41,14 +41,14 @@ export type MarketConfig = {
  */
 export namespace MarketConfig {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("sensitivity", AlgebraicType.createU64Type()),
-      new ProductTypeElement("slippageFactor", AlgebraicType.createU64Type()),
-      new ProductTypeElement("minPrice", AlgebraicType.createU128Type()),
+      new ProductTypeElement('sensitivity', AlgebraicType.createU64Type()),
+      new ProductTypeElement('slippageFactor', AlgebraicType.createU64Type()),
+      new ProductTypeElement('minPrice', AlgebraicType.createU128Type()),
     ]);
   }
 
@@ -59,7 +59,4 @@ export namespace MarketConfig {
   export function deserialize(reader: BinaryReader): MarketConfig {
     return MarketConfig.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-
-

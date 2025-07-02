@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,18 +29,17 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 
 export type AddUpgrade = {
-  identifier: string,
-  title: string,
-  description: string,
-  level: number,
-  cost: bigint,
-  passiveIncomeBonus: bigint | undefined,
-  clickPowerBonus: bigint | undefined,
-  clickTimerBonus: bigint | undefined,
+  identifier: string;
+  title: string;
+  description: string;
+  level: number;
+  cost: bigint;
+  passiveIncomeBonus: bigint | undefined;
+  clickPowerBonus: bigint | undefined;
+  clickTimerBonus: bigint | undefined;
 };
 
 /**
@@ -47,19 +47,28 @@ export type AddUpgrade = {
  */
 export namespace AddUpgrade {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("identifier", AlgebraicType.createStringType()),
-      new ProductTypeElement("title", AlgebraicType.createStringType()),
-      new ProductTypeElement("description", AlgebraicType.createStringType()),
-      new ProductTypeElement("level", AlgebraicType.createU8Type()),
-      new ProductTypeElement("cost", AlgebraicType.createU128Type()),
-      new ProductTypeElement("passiveIncomeBonus", AlgebraicType.createOptionType(AlgebraicType.createU128Type())),
-      new ProductTypeElement("clickPowerBonus", AlgebraicType.createOptionType(AlgebraicType.createU128Type())),
-      new ProductTypeElement("clickTimerBonus", AlgebraicType.createOptionType(AlgebraicType.createU64Type())),
+      new ProductTypeElement('identifier', AlgebraicType.createStringType()),
+      new ProductTypeElement('title', AlgebraicType.createStringType()),
+      new ProductTypeElement('description', AlgebraicType.createStringType()),
+      new ProductTypeElement('level', AlgebraicType.createU8Type()),
+      new ProductTypeElement('cost', AlgebraicType.createU128Type()),
+      new ProductTypeElement(
+        'passiveIncomeBonus',
+        AlgebraicType.createOptionType(AlgebraicType.createU128Type())
+      ),
+      new ProductTypeElement(
+        'clickPowerBonus',
+        AlgebraicType.createOptionType(AlgebraicType.createU128Type())
+      ),
+      new ProductTypeElement(
+        'clickTimerBonus',
+        AlgebraicType.createOptionType(AlgebraicType.createU64Type())
+      ),
     ]);
   }
 
@@ -70,6 +79,4 @@ export namespace AddUpgrade {
   export function deserialize(reader: BinaryReader): AddUpgrade {
     return AddUpgrade.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-

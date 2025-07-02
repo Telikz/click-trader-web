@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,13 +29,12 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 
-import { UpdatePlayersSchedule as __UpdatePlayersSchedule } from "./update_players_schedule_type";
+import { UpdatePlayersSchedule as __UpdatePlayersSchedule } from './update_players_schedule_type';
 
 export type UpdatePlayers = {
-  args: __UpdatePlayersSchedule,
+  args: __UpdatePlayersSchedule;
 };
 
 /**
@@ -42,12 +42,15 @@ export type UpdatePlayers = {
  */
 export namespace UpdatePlayers {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("args", __UpdatePlayersSchedule.getTypeScriptAlgebraicType()),
+      new ProductTypeElement(
+        'args',
+        __UpdatePlayersSchedule.getTypeScriptAlgebraicType()
+      ),
     ]);
   }
 
@@ -58,6 +61,4 @@ export namespace UpdatePlayers {
   export function deserialize(reader: BinaryReader): UpdatePlayers {
     return UpdatePlayers.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-

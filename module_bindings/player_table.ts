@@ -14,10 +14,11 @@ import {
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
-  Identity,
+  type Identity,
   ProductType,
   ProductTypeElement,
   ReducerEventContextInterface,
@@ -25,15 +26,13 @@ import {
   SubscriptionEventContextInterface,
   SumType,
   SumTypeVariant,
-  TableCache,
+  type TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
-import { Player } from "./player_type";
-import { StockType as __StockType } from "./stock_type_type";
-
-import { EventContext, Reducer, RemoteReducers, RemoteTables } from ".";
+} from '@clockworklabs/spacetimedb-sdk';
+import { type EventContext, Reducer, RemoteReducers, RemoteTables } from '.';
+import type { Player } from './player_type';
+import { StockType as __StockType } from './stock_type_type';
 
 /**
  * Table handle for the table `player`.
@@ -74,7 +73,7 @@ export class PlayerTableHandle {
     // Find the subscribed row whose `identity` column value is equal to `col_val`,
     // if such a row is present in the client cache.
     find: (col_val: Identity): Player | undefined => {
-      for (let row of this.tableCache.iter()) {
+      for (const row of this.tableCache.iter()) {
         if (deepEqual(row.identity, col_val)) {
           return row;
         }
@@ -84,25 +83,30 @@ export class PlayerTableHandle {
 
   onInsert = (cb: (ctx: EventContext, row: Player) => void) => {
     return this.tableCache.onInsert(cb);
-  }
+  };
 
   removeOnInsert = (cb: (ctx: EventContext, row: Player) => void) => {
     return this.tableCache.removeOnInsert(cb);
-  }
+  };
 
   onDelete = (cb: (ctx: EventContext, row: Player) => void) => {
     return this.tableCache.onDelete(cb);
-  }
+  };
 
   removeOnDelete = (cb: (ctx: EventContext, row: Player) => void) => {
     return this.tableCache.removeOnDelete(cb);
-  }
+  };
 
   // Updates are only defined for tables with primary keys.
-  onUpdate = (cb: (ctx: EventContext, oldRow: Player, newRow: Player) => void) => {
+  onUpdate = (
+    cb: (ctx: EventContext, oldRow: Player, newRow: Player) => void
+  ) => {
     return this.tableCache.onUpdate(cb);
-  }
+  };
 
-  removeOnUpdate = (cb: (ctx: EventContext, onRow: Player, newRow: Player) => void) => {
+  removeOnUpdate = (
+    cb: (ctx: EventContext, onRow: Player, newRow: Player) => void
+  ) => {
     return this.tableCache.removeOnUpdate(cb);
-  }}
+  };
+}

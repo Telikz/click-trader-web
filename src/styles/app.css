@@ -1,14 +1,2 @@
 @import "tailwindcss";
 @plugin "daisyui";
-
-::-webkit-scrollbar {
-    width: 8px; /* Adjust the width as needed */
-}
-
-::-webkit-scrollbar-thumb {
-    background: #ba0f0f; /* Change the thumb color */
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #722121; /* Darker color on hover */
-}

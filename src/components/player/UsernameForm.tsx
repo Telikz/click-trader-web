@@ -1,31 +1,37 @@
-import { useState } from "react";
-import { useSpacetime } from "~/spacetimedb/useSpacetimeConnection";
+import { useState } from 'react';
+import { useSpacetime } from '~/spacetimedb/useSpacetimeConnection';
 
 export default function UsernameForm() {
-   const { conn } = useSpacetime();
-   const [usernameInput, setUsernameInput] = useState("");
+  const { conn } = useSpacetime();
+  const [usernameInput, setUsernameInput] = useState('');
 
-   if (!conn) return null;
+  if (!conn) {
+    return null;
+  }
 
-   const handleUsernameSubmit = () => {
-      if (usernameInput.trim() !== "") {
-         conn.reducers.setName(usernameInput.trim());
-         setUsernameInput("");
-      }
-   };
+  const handleUsernameSubmit = () => {
+    if (usernameInput.trim() !== '') {
+      conn.reducers.setName(usernameInput.trim());
+      setUsernameInput('');
+    }
+  };
 
-   return (
-      <div className="flex gap-2 items-center">
-         <input
-            type="text"
-            className="input border-primary"
-            placeholder="Enter username"
-            value={usernameInput}
-            onChange={(e) => setUsernameInput(e.target.value)}
-         />
-         <button className="btn btn-primary" onClick={handleUsernameSubmit}>
-            Set
-         </button>
-      </div>
-   );
+  return (
+    <div className="flex items-center gap-2">
+      <input
+        className="input border-primary"
+        onChange={(e) => setUsernameInput(e.target.value)}
+        placeholder="Enter username"
+        type="text"
+        value={usernameInput}
+      />
+      <button
+        className="btn btn-primary"
+        onClick={handleUsernameSubmit}
+        type="submit"
+      >
+        Set
+      </button>
+    </div>
+  );
 }

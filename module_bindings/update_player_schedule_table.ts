@@ -14,6 +14,7 @@ import {
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -25,13 +26,12 @@ import {
   SubscriptionEventContextInterface,
   SumType,
   SumTypeVariant,
-  TableCache,
+  type TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
-import { UpdatePlayersSchedule } from "./update_players_schedule_type";
-import { EventContext, Reducer, RemoteReducers, RemoteTables } from ".";
+} from '@clockworklabs/spacetimedb-sdk';
+import { type EventContext, Reducer, RemoteReducers, RemoteTables } from '.';
+import type { UpdatePlayersSchedule } from './update_players_schedule_type';
 
 /**
  * Table handle for the table `update_player_schedule`.
@@ -72,7 +72,7 @@ export class UpdatePlayerScheduleTableHandle {
     // Find the subscribed row whose `id` column value is equal to `col_val`,
     // if such a row is present in the client cache.
     find: (col_val: bigint): UpdatePlayersSchedule | undefined => {
-      for (let row of this.tableCache.iter()) {
+      for (const row of this.tableCache.iter()) {
         if (deepEqual(row.id, col_val)) {
           return row;
         }
@@ -82,25 +82,42 @@ export class UpdatePlayerScheduleTableHandle {
 
   onInsert = (cb: (ctx: EventContext, row: UpdatePlayersSchedule) => void) => {
     return this.tableCache.onInsert(cb);
-  }
+  };
 
-  removeOnInsert = (cb: (ctx: EventContext, row: UpdatePlayersSchedule) => void) => {
+  removeOnInsert = (
+    cb: (ctx: EventContext, row: UpdatePlayersSchedule) => void
+  ) => {
     return this.tableCache.removeOnInsert(cb);
-  }
+  };
 
   onDelete = (cb: (ctx: EventContext, row: UpdatePlayersSchedule) => void) => {
     return this.tableCache.onDelete(cb);
-  }
+  };
 
-  removeOnDelete = (cb: (ctx: EventContext, row: UpdatePlayersSchedule) => void) => {
+  removeOnDelete = (
+    cb: (ctx: EventContext, row: UpdatePlayersSchedule) => void
+  ) => {
     return this.tableCache.removeOnDelete(cb);
-  }
+  };
 
   // Updates are only defined for tables with primary keys.
-  onUpdate = (cb: (ctx: EventContext, oldRow: UpdatePlayersSchedule, newRow: UpdatePlayersSchedule) => void) => {
+  onUpdate = (
+    cb: (
+      ctx: EventContext,
+      oldRow: UpdatePlayersSchedule,
+      newRow: UpdatePlayersSchedule
+    ) => void
+  ) => {
     return this.tableCache.onUpdate(cb);
-  }
+  };
 
-  removeOnUpdate = (cb: (ctx: EventContext, onRow: UpdatePlayersSchedule, newRow: UpdatePlayersSchedule) => void) => {
+  removeOnUpdate = (
+    cb: (
+      ctx: EventContext,
+      onRow: UpdatePlayersSchedule,
+      newRow: UpdatePlayersSchedule
+    ) => void
+  ) => {
     return this.tableCache.removeOnUpdate(cb);
-  }}
+  };
+}

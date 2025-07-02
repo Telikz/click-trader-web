@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,13 +29,12 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 
-import { StockMarketSchedule as __StockMarketSchedule } from "./stock_market_schedule_type";
+import { StockMarketSchedule as __StockMarketSchedule } from './stock_market_schedule_type';
 
 export type UpdateStockPrices = {
-  args: __StockMarketSchedule,
+  args: __StockMarketSchedule;
 };
 
 /**
@@ -42,22 +42,26 @@ export type UpdateStockPrices = {
  */
 export namespace UpdateStockPrices {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("args", __StockMarketSchedule.getTypeScriptAlgebraicType()),
+      new ProductTypeElement(
+        'args',
+        __StockMarketSchedule.getTypeScriptAlgebraicType()
+      ),
     ]);
   }
 
-  export function serialize(writer: BinaryWriter, value: UpdateStockPrices): void {
+  export function serialize(
+    writer: BinaryWriter,
+    value: UpdateStockPrices
+  ): void {
     UpdateStockPrices.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
   export function deserialize(reader: BinaryReader): UpdateStockPrices {
     return UpdateStockPrices.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-

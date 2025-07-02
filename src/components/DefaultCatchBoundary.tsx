@@ -1,53 +1,52 @@
+import type { ErrorComponentProps } from '@tanstack/react-router';
 import {
-   ErrorComponent,
-   Link,
-   rootRouteId,
-   useMatch,
-   useRouter,
-} from "@tanstack/react-router";
-import type { ErrorComponentProps } from "@tanstack/react-router";
+  ErrorComponent,
+  Link,
+  rootRouteId,
+  useMatch,
+  useRouter,
+} from '@tanstack/react-router';
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
-   const router = useRouter();
-   const isRoot = useMatch({
-      strict: false,
-      select: (state) => state.id === rootRouteId,
-   });
+  const router = useRouter();
+  const isRoot = useMatch({
+    strict: false,
+    select: (state) => state.id === rootRouteId,
+  });
 
-   console.error(error);
-
-   return (
-      <div className="min-w-0 flex-1 p-4 flex flex-col items-center justify-center gap-6">
-         <ErrorComponent error={error} />
-         <div className="flex gap-2 items-center flex-wrap">
-            <button
-               onClick={() => {
-                  router.invalidate().then(() => {});
-               }}
-               className={`px-2 py-1 bg-gray-600 rounded uppercase font-extrabold`}
-            >
-               Try Again
-            </button>
-            {isRoot ? (
-               <Link
-                  to="/"
-                  className={`px-2 py-1 bg-gray-600 rounded uppercase font-extrabold`}
-               >
-                  Home
-               </Link>
-            ) : (
-               <Link
-                  to="/"
-                  className={`px-2 py-1 bg-gray-600 uppercase font-extrabold`}
-                  onClick={(e) => {
-                     e.preventDefault();
-                     window.history.back();
-                  }}
-               >
-                  Go Back
-               </Link>
-            )}
-         </div>
+  return (
+    <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-6 p-4">
+      <ErrorComponent error={error} />
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          className={'rounded bg-gray-600 px-2 py-1 font-extrabold uppercase'}
+          onClick={() => {
+            router.invalidate();
+          }}
+          type="submit"
+        >
+          Try Again
+        </button>
+        {isRoot ? (
+          <Link
+            className={'rounded bg-gray-600 px-2 py-1 font-extrabold uppercase'}
+            to="/"
+          >
+            Home
+          </Link>
+        ) : (
+          <Link
+            className={'bg-gray-600 px-2 py-1 font-extrabold uppercase'}
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.back();
+            }}
+            to="/"
+          >
+            Go Back
+          </Link>
+        )}
       </div>
-   );
+    </div>
+  );
 }

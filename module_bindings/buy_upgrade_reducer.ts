@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,11 +29,10 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 
 export type BuyUpgrade = {
-  upgradeId: number,
+  upgradeId: number;
 };
 
 /**
@@ -40,12 +40,12 @@ export type BuyUpgrade = {
  */
 export namespace BuyUpgrade {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("upgradeId", AlgebraicType.createU16Type()),
+      new ProductTypeElement('upgradeId', AlgebraicType.createU16Type()),
     ]);
   }
 
@@ -56,6 +56,4 @@ export namespace BuyUpgrade {
   export function deserialize(reader: BinaryReader): BuyUpgrade {
     return BuyUpgrade.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-

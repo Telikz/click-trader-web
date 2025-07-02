@@ -1,99 +1,91 @@
-import { useCallback, useEffect } from "react";
-import { create } from "zustand";
-import { DbConnection, ErrorContext } from "../../module_bindings";
-import { Identity } from "@clockworklabs/spacetimedb-sdk";
-import { useAuth, useUser } from "@clerk/tanstack-react-start";
+import { useAuth, useUser } from '@clerk/tanstack-react-start';
+import type { Identity } from '@clockworklabs/spacetimedb-sdk';
+import { useCallback, useEffect } from 'react';
+import { create } from 'zustand';
+import { DbConnection, type ErrorContext } from '../../module_bindings';
 
 interface SpacetimeState {
-   connected: boolean;
-   identity: Identity | null;
-   conn: DbConnection | null;
+  connected: boolean;
+  identity: Identity | null;
+  conn: DbConnection | null;
 }
 
 export const useSpacetime = create<SpacetimeState>(() => ({
-   connected: false,
-   identity: null,
-   conn: null,
+  connected: false,
+  identity: null,
+  conn: null,
 }));
 
 export function useSpacetimeConnection() {
-   const setState = useSpacetime.setState;
-   const { getToken } = useAuth();
-   const { user, isLoaded, isSignedIn } = useUser();
+  const setState = useSpacetime.setState;
+  const { getToken } = useAuth();
+  const { user, isLoaded, isSignedIn } = useUser();
 
-   const connectToSpacetime = useCallback(async () => {
-      try {
-         const token = await getToken();
-         if (!token) throw new Error("No token from Clerk");
+  const connectToSpacetime = useCallback(async () => {
+    const token = await getToken();
 
-         const onConnect = (conn: DbConnection, identity: Identity) => {
-            setState({ connected: true, identity, conn });
-            console.log("Connected:", identity.toHexString());
+    const onConnect = (connection: DbConnection, identity: Identity) => {
+      setState({ connected: true, identity, conn: connection });
 
-            conn
-               .subscriptionBuilder()
-               .onApplied(() => console.log("SDK cache initialized"))
-               .subscribe([
-                  "SELECT * FROM player",
-                  "SELECT * FROM upgrades",
-                  "SELECT * FROM stock",
-               ]);
-            conn.reducers.setName(user?.username || "Unknown");
-         };
+      connection
+        .subscriptionBuilder()
+        .subscribe([
+          'SELECT * FROM player',
+          'SELECT * FROM upgrades',
+          'SELECT * FROM stock',
+        ]);
+      conn.reducers.setName(user?.username || 'Unknown');
+    };
 
-         const onDisconnect = () => {
-            console.log("Disconnected from SpaceTimeDB");
-            setState({ connected: false });
-         };
+    const onDisconnect = () => {
+      setState({ connected: false });
+    };
 
-         const onConnectError = (_ctx: ErrorContext, err: Error) => {
-            console.log("Connection error:", err);
-         };
+    const onConnectError = (_ctx: ErrorContext, _err: Error) => {
+      setState({ connected: false });
+    };
 
-         const conn = DbConnection.builder()
-            .withUri(
-               import.meta.env.PROD
-                  ? "wss://spacetimedb.minmaxing.net"
-                  : "ws://localhost:3001"
-            )
-            .withModuleName("test")
-            .withToken(token)
-            .onConnect(onConnect)
-            .onDisconnect(onDisconnect)
-            .onConnectError(onConnectError)
-            .build();
+    const conn = DbConnection.builder()
+      .withUri(
+        import.meta.env.PROD
+          ? import.meta.env.VITE_SPACETIMEDB_SERVER
+          : 'ws://localhost:3001'
+      )
+      .withModuleName('test')
+      .withToken(token?.toString())
+      .onConnect(onConnect)
+      .onDisconnect(onDisconnect)
+      .onConnectError(onConnectError)
+      .build();
 
-         setState({ conn });
-      } catch (err) {
-         console.error("Failed to connect to SpaceTimeDB:", err);
+    setState({ conn });
+  }, [getToken, setState, user?.username]);
+
+  useEffect(() => {
+    if (!(isLoaded && isSignedIn)) {
+      return;
+    }
+
+    connectToSpacetime();
+
+    const handleFocus = () => {
+      if (!useSpacetime.getState().connected) {
+        connectToSpacetime();
       }
-   }, [getToken, setState, user?.username]);
+    };
 
-   useEffect(() => {
-      if (!isLoaded || !isSignedIn) return;
+    const handleOnline = () => {
+      if (!useSpacetime.getState().connected) {
+        connectToSpacetime();
+      }
+    };
 
-      connectToSpacetime();
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('online', handleOnline);
 
-      const handleFocus = () => {
-         if (!useSpacetime.getState().connected) {
-            console.log("Reconnecting on focus...");
-            connectToSpacetime();
-         }
-      };
-
-      const handleOnline = () => {
-         if (!useSpacetime.getState().connected) {
-            console.log("Reconnecting on coming online...");
-            connectToSpacetime();
-         }
-      };
-
-      window.addEventListener("focus", handleFocus);
-      window.addEventListener("online", handleOnline);
-
-      return () => {
-         window.removeEventListener("focus", handleFocus);
-         window.removeEventListener("online", handleOnline);
-      };
-   }, [isLoaded, isSignedIn, connectToSpacetime]);
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('online', handleOnline);
+    };
+  }, [isLoaded, isSignedIn, connectToSpacetime]);
 }

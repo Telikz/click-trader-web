@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,18 +29,17 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 export type Stock = {
-  id: number,
-  name: string,
-  description: string,
-  pricePerShare: bigint,
-  totalShares: bigint,
-  availableShares: bigint,
-  lastPrice: bigint,
-  recentBuys: bigint,
-  recentSells: bigint,
+  id: number;
+  name: string;
+  description: string;
+  pricePerShare: bigint;
+  totalShares: bigint;
+  availableShares: bigint;
+  lastPrice: bigint;
+  recentBuys: bigint;
+  recentSells: bigint;
 };
 
 /**
@@ -47,20 +47,20 @@ export type Stock = {
  */
 export namespace Stock {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("id", AlgebraicType.createU16Type()),
-      new ProductTypeElement("name", AlgebraicType.createStringType()),
-      new ProductTypeElement("description", AlgebraicType.createStringType()),
-      new ProductTypeElement("pricePerShare", AlgebraicType.createU128Type()),
-      new ProductTypeElement("totalShares", AlgebraicType.createU64Type()),
-      new ProductTypeElement("availableShares", AlgebraicType.createU64Type()),
-      new ProductTypeElement("lastPrice", AlgebraicType.createU128Type()),
-      new ProductTypeElement("recentBuys", AlgebraicType.createU64Type()),
-      new ProductTypeElement("recentSells", AlgebraicType.createU64Type()),
+      new ProductTypeElement('id', AlgebraicType.createU16Type()),
+      new ProductTypeElement('name', AlgebraicType.createStringType()),
+      new ProductTypeElement('description', AlgebraicType.createStringType()),
+      new ProductTypeElement('pricePerShare', AlgebraicType.createU128Type()),
+      new ProductTypeElement('totalShares', AlgebraicType.createU64Type()),
+      new ProductTypeElement('availableShares', AlgebraicType.createU64Type()),
+      new ProductTypeElement('lastPrice', AlgebraicType.createU128Type()),
+      new ProductTypeElement('recentBuys', AlgebraicType.createU64Type()),
+      new ProductTypeElement('recentSells', AlgebraicType.createU64Type()),
     ]);
   }
 
@@ -71,7 +71,4 @@ export namespace Stock {
   export function deserialize(reader: BinaryReader): Stock {
     return Stock.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-
-

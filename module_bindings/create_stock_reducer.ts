@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,14 +29,13 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 
 export type CreateStock = {
-  name: string,
-  description: string,
-  initialPrice: bigint,
-  totalShares: bigint,
+  name: string;
+  description: string;
+  initialPrice: bigint;
+  totalShares: bigint;
 };
 
 /**
@@ -43,15 +43,15 @@ export type CreateStock = {
  */
 export namespace CreateStock {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("name", AlgebraicType.createStringType()),
-      new ProductTypeElement("description", AlgebraicType.createStringType()),
-      new ProductTypeElement("initialPrice", AlgebraicType.createU128Type()),
-      new ProductTypeElement("totalShares", AlgebraicType.createU64Type()),
+      new ProductTypeElement('name', AlgebraicType.createStringType()),
+      new ProductTypeElement('description', AlgebraicType.createStringType()),
+      new ProductTypeElement('initialPrice', AlgebraicType.createU128Type()),
+      new ProductTypeElement('totalShares', AlgebraicType.createU64Type()),
     ]);
   }
 
@@ -62,6 +62,4 @@ export namespace CreateStock {
   export function deserialize(reader: BinaryReader): CreateStock {
     return CreateStock.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-
