@@ -48,7 +48,7 @@ export function useSpacetimeConnection() {
     const conn = DbConnection.builder()
       .withUri(
         import.meta.env.PROD
-          ? 'wss://spacetime.minmaxing.net'
+          ? 'wss://spacetimedb.minmaxing.net'
           : 'ws://localhost:3001'
       )
       .withModuleName('test')
