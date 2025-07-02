@@ -1,47 +1,47 @@
-import { usePlayerStore } from "~/stores/usePlayerStore";
-import { formatBigInt } from "~/utils/formatBigInt";
-import { useSpacetime } from "~/spacetimedb/useSpacetimeConnection";
-import { Link } from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router';
+import { useSpacetime } from '~/spacetimedb/useSpacetimeConnection';
+import { usePlayerStore } from '~/stores/usePlayerStore';
+import { formatBigInt } from '~/utils/formatBigInt';
 
 export function Leaderboards() {
-   const { identity } = useSpacetime();
+  const { identity } = useSpacetime();
 
-   const players = Array.from(usePlayerStore((s) => s.players).values()).sort(
-      (a, b) => Number(b.money - a.money)
-   );
+  const players = Array.from(usePlayerStore((s) => s.players).values()).sort(
+    (a, b) => Number(b.money - a.money)
+  );
 
-   return (
-      <div className="flex-1 bg-base-100 rounded-2xl shadow-xl p-6 flex flex-col items-center h-96">
-         <h3 className="text-3xl font-bold mb-6 text-primary text-center">
-            <Link to="/leaderboards">Leaderboards</Link>
-         </h3>
+  return (
+    <div className="flex h-96 flex-1 flex-col items-center rounded-2xl bg-base-100 p-6 shadow-xl">
+      <h3 className="mb-6 text-center font-bold text-3xl text-primary">
+        <Link to="/leaderboards">Leaderboards</Link>
+      </h3>
 
-         {players.length > 0 ? (
-            <ul className="space-y-3 w-full max-w-lg overflow-y-auto">
-               {players.map((player, index) => {
-                  const isCurrentUser =
-                     identity?.toHexString() === player.identity.toHexString();
+      {players.length > 0 ? (
+        <ul className="w-full max-w-lg space-y-3 overflow-y-auto">
+          {players.map((player, index) => {
+            const isCurrentUser =
+              identity?.toHexString() === player.identity.toHexString();
 
-                  return (
-                     <li
-                        key={player.identity.toHexString()}
-                        className={`flex justify-between px-4 py-2 rounded-lg ${
-                           isCurrentUser
-                              ? "bg-primary/10 text-primary font-semibold"
-                              : "bg-base-200"
-                        }`}
-                     >
-                        <span>
-                           {index + 1}. {player.username || "Unknown"}
-                        </span>
-                        <span>{formatBigInt(player.money)}</span>
-                     </li>
-                  );
-               })}
-            </ul>
-         ) : (
-            <p className="text-primary/50 text-center">No players found.</p>
-         )}
-      </div>
-   );
+            return (
+              <li
+                className={`flex justify-between rounded-lg px-4 py-2 ${
+                  isCurrentUser
+                    ? 'bg-primary/10 font-semibold text-primary'
+                    : 'bg-base-200'
+                }`}
+                key={player.identity.toHexString()}
+              >
+                <span>
+                  {index + 1}. {player.username || 'Unknown'}
+                </span>
+                <span>{formatBigInt(player.money)}</span>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p className="text-center text-primary/50">No players found.</p>
+      )}
+    </div>
+  );
 }

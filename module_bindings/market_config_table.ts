@@ -14,6 +14,7 @@ import {
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -25,13 +26,12 @@ import {
   SubscriptionEventContextInterface,
   SumType,
   SumTypeVariant,
-  TableCache,
+  type TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
-import { MarketConfig } from "./market_config_type";
-import { EventContext, Reducer, RemoteReducers, RemoteTables } from ".";
+} from '@clockworklabs/spacetimedb-sdk';
+import { type EventContext, Reducer, RemoteReducers, RemoteTables } from '.';
+import type { MarketConfig } from './market_config_type';
 
 /**
  * Table handle for the table `market_config`.
@@ -60,17 +60,17 @@ export class MarketConfigTableHandle {
 
   onInsert = (cb: (ctx: EventContext, row: MarketConfig) => void) => {
     return this.tableCache.onInsert(cb);
-  }
+  };
 
   removeOnInsert = (cb: (ctx: EventContext, row: MarketConfig) => void) => {
     return this.tableCache.removeOnInsert(cb);
-  }
+  };
 
   onDelete = (cb: (ctx: EventContext, row: MarketConfig) => void) => {
     return this.tableCache.onDelete(cb);
-  }
+  };
 
   removeOnDelete = (cb: (ctx: EventContext, row: MarketConfig) => void) => {
     return this.tableCache.removeOnDelete(cb);
-  }
+  };
 }

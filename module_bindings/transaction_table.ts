@@ -14,6 +14,7 @@ import {
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -25,16 +26,14 @@ import {
   SubscriptionEventContextInterface,
   SumType,
   SumTypeVariant,
-  TableCache,
+  type TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
-import { Transaction } from "./transaction_type";
-import { TransactionType as __TransactionType } from "./transaction_type_type";
-import { TransactionStatus as __TransactionStatus } from "./transaction_status_type";
-
-import { EventContext, Reducer, RemoteReducers, RemoteTables } from ".";
+} from '@clockworklabs/spacetimedb-sdk';
+import { type EventContext, Reducer, RemoteReducers, RemoteTables } from '.';
+import { TransactionStatus as __TransactionStatus } from './transaction_status_type';
+import type { Transaction } from './transaction_type';
+import { TransactionType as __TransactionType } from './transaction_type_type';
 
 /**
  * Table handle for the table `transaction`.
@@ -75,7 +74,7 @@ export class TransactionTableHandle {
     // Find the subscribed row whose `id` column value is equal to `col_val`,
     // if such a row is present in the client cache.
     find: (col_val: number): Transaction | undefined => {
-      for (let row of this.tableCache.iter()) {
+      for (const row of this.tableCache.iter()) {
         if (deepEqual(row.id, col_val)) {
           return row;
         }
@@ -85,25 +84,30 @@ export class TransactionTableHandle {
 
   onInsert = (cb: (ctx: EventContext, row: Transaction) => void) => {
     return this.tableCache.onInsert(cb);
-  }
+  };
 
   removeOnInsert = (cb: (ctx: EventContext, row: Transaction) => void) => {
     return this.tableCache.removeOnInsert(cb);
-  }
+  };
 
   onDelete = (cb: (ctx: EventContext, row: Transaction) => void) => {
     return this.tableCache.onDelete(cb);
-  }
+  };
 
   removeOnDelete = (cb: (ctx: EventContext, row: Transaction) => void) => {
     return this.tableCache.removeOnDelete(cb);
-  }
+  };
 
   // Updates are only defined for tables with primary keys.
-  onUpdate = (cb: (ctx: EventContext, oldRow: Transaction, newRow: Transaction) => void) => {
+  onUpdate = (
+    cb: (ctx: EventContext, oldRow: Transaction, newRow: Transaction) => void
+  ) => {
     return this.tableCache.onUpdate(cb);
-  }
+  };
 
-  removeOnUpdate = (cb: (ctx: EventContext, onRow: Transaction, newRow: Transaction) => void) => {
+  removeOnUpdate = (
+    cb: (ctx: EventContext, onRow: Transaction, newRow: Transaction) => void
+  ) => {
     return this.tableCache.removeOnUpdate(cb);
-  }}
+  };
+}

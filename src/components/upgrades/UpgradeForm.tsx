@@ -1,142 +1,145 @@
-import { useState, ChangeEvent } from "react";
-import { useSpacetime } from "~/spacetimedb/useSpacetimeConnection";
+import { type ChangeEvent, useState } from 'react';
+import { useSpacetime } from '~/spacetimedb/useSpacetimeConnection';
 
 export default function UpgradeForm() {
-   const { conn } = useSpacetime();
+  const { conn } = useSpacetime();
 
-   const [form, setForm] = useState({
-      identifier: "",
-      title: "",
-      description: "",
-      level: "",
-      cost: "",
-      passive_income_bonus: "",
-      click_power_bonus: "",
-      click_timer_bonus: "",
-   });
+  const [form, setForm] = useState({
+    identifier: '',
+    title: '',
+    description: '',
+    level: '',
+    cost: '',
+    passive_income_bonus: '',
+    click_power_bonus: '',
+    click_timer_bonus: '',
+  });
 
-   const [status, setStatus] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
 
-   const handleChange = (
-      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-   ) => {
-      setForm({ ...form, [e.target.name]: e.target.value });
-   };
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-   const handleSubmit = async () => {
-      if (!conn) return;
+  const handleSubmit = () => {
+    if (!conn) {
+      return;
+    }
 
-      const level = parseInt(form.level || "1", 10);
-      const cost = BigInt(form.cost || "0");
+    const level = Number.parseInt(form.level || '1', 10);
+    const cost = BigInt(form.cost || '0');
 
-      const passiveIncomeBonus = form.passive_income_bonus
-         ? BigInt(form.passive_income_bonus)
-         : undefined;
-      const clickPowerBonus = form.click_power_bonus
-         ? BigInt(form.click_power_bonus)
-         : undefined;
-      const clickTimerBonus = form.click_timer_bonus
-         ? BigInt(form.click_timer_bonus)
-         : undefined;
+    const passiveIncomeBonus = form.passive_income_bonus
+      ? BigInt(form.passive_income_bonus)
+      : undefined;
+    const clickPowerBonus = form.click_power_bonus
+      ? BigInt(form.click_power_bonus)
+      : undefined;
+    const clickTimerBonus = form.click_timer_bonus
+      ? BigInt(form.click_timer_bonus)
+      : undefined;
 
-      conn.reducers.addUpgrade(
-         form.identifier,
-         form.title,
-         form.description,
-         level,
-         cost,
-         passiveIncomeBonus,
-         clickPowerBonus,
-         clickTimerBonus
-      );
+    conn.reducers.addUpgrade(
+      form.identifier,
+      form.title,
+      form.description,
+      level,
+      cost,
+      passiveIncomeBonus,
+      clickPowerBonus,
+      clickTimerBonus
+    );
 
-      setStatus("✅ Upgrade added successfully!");
-      setForm({
-         identifier: "",
-         title: "",
-         description: "",
-         level: "",
-         cost: "",
-         passive_income_bonus: "",
-         click_power_bonus: "",
-         click_timer_bonus: "",
-      });
-   };
+    setStatus('✅ Upgrade added successfully!');
+    setForm({
+      identifier: '',
+      title: '',
+      description: '',
+      level: '',
+      cost: '',
+      passive_income_bonus: '',
+      click_power_bonus: '',
+      click_timer_bonus: '',
+    });
+  };
 
-   return (
-      <div className="p-4 border rounded max-w-md mx-auto flex flex-col gap-2">
-         <h2 className="text-xl font-bold">Add New Upgrade</h2>
+  return (
+    <div className="mx-auto flex max-w-md flex-col gap-2 rounded border p-4">
+      <h2 className="font-bold text-xl">Add New Upgrade</h2>
 
-         <input
-            name="identifier"
-            placeholder="Identifier (e.g., click_power_1)"
-            value={form.identifier}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
-         <input
-            name="title"
-            placeholder="Title (e.g., Stronger Clicks)"
-            value={form.title}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
-         <textarea
-            name="description"
-            placeholder="Description"
-            value={form.description}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
-         <input
-            name="level"
-            type="number"
-            placeholder="Level"
-            value={form.level}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
-         <input
-            name="cost"
-            type="number"
-            placeholder="Cost (e.g., 100 for $100)"
-            value={form.cost}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
-         <input
-            name="passive_income_bonus"
-            type="number"
-            placeholder="Passive Bonus (e.g., 100 for +$0.10/s)"
-            value={form.passive_income_bonus}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
-         <input
-            name="click_power_bonus"
-            type="number"
-            placeholder="Click Bonus (e.g., 100 for +$0.10/click)"
-            value={form.click_power_bonus}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
-         <input
-            name="click_timer_bonus"
-            type="number"
-            placeholder="Click Cooldown Reduction (in µs)"
-            value={form.click_timer_bonus}
-            onChange={handleChange}
-            className="border p-2 rounded"
-         />
+      <input
+        className="rounded border p-2"
+        name="identifier"
+        onChange={handleChange}
+        placeholder="Identifier (e.g., click_power_1)"
+        value={form.identifier}
+      />
+      <input
+        className="rounded border p-2"
+        name="title"
+        onChange={handleChange}
+        placeholder="Title (e.g., Stronger Clicks)"
+        value={form.title}
+      />
+      <textarea
+        className="rounded border p-2"
+        name="description"
+        onChange={handleChange}
+        placeholder="Description"
+        value={form.description}
+      />
+      <input
+        className="rounded border p-2"
+        name="level"
+        onChange={handleChange}
+        placeholder="Level"
+        type="number"
+        value={form.level}
+      />
+      <input
+        className="rounded border p-2"
+        name="cost"
+        onChange={handleChange}
+        placeholder="Cost (e.g., 100 for $100)"
+        type="number"
+        value={form.cost}
+      />
+      <input
+        className="rounded border p-2"
+        name="passive_income_bonus"
+        onChange={handleChange}
+        placeholder="Passive Bonus (e.g., 100 for +$0.10/s)"
+        type="number"
+        value={form.passive_income_bonus}
+      />
+      <input
+        className="rounded border p-2"
+        name="click_power_bonus"
+        onChange={handleChange}
+        placeholder="Click Bonus (e.g., 100 for +$0.10/click)"
+        type="number"
+        value={form.click_power_bonus}
+      />
+      <input
+        className="rounded border p-2"
+        name="click_timer_bonus"
+        onChange={handleChange}
+        placeholder="Click Cooldown Reduction (in µs)"
+        type="number"
+        value={form.click_timer_bonus}
+      />
 
-         <button
-            onClick={handleSubmit}
-            className="btn btn-primary px-4 py-2 rounded"
-         >
-            Submit
-         </button>
+      <button
+        className="btn btn-primary rounded px-4 py-2"
+        onClick={handleSubmit}
+        type="submit"
+      >
+        Submit
+      </button>
 
-         {status && <p className="text-sm text-gray-700">{status}</p>}
-      </div>
-   );
+      {status && <p className="text-gray-700 text-sm">{status}</p>}
+    </div>
+  );
 }

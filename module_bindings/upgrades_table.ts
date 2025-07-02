@@ -14,6 +14,7 @@ import {
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -25,13 +26,12 @@ import {
   SubscriptionEventContextInterface,
   SumType,
   SumTypeVariant,
-  TableCache,
+  type TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
-import { Upgrades } from "./upgrades_type";
-import { EventContext, Reducer, RemoteReducers, RemoteTables } from ".";
+} from '@clockworklabs/spacetimedb-sdk';
+import { type EventContext, Reducer, RemoteReducers, RemoteTables } from '.';
+import type { Upgrades } from './upgrades_type';
 
 /**
  * Table handle for the table `upgrades`.
@@ -72,7 +72,7 @@ export class UpgradesTableHandle {
     // Find the subscribed row whose `id` column value is equal to `col_val`,
     // if such a row is present in the client cache.
     find: (col_val: number): Upgrades | undefined => {
-      for (let row of this.tableCache.iter()) {
+      for (const row of this.tableCache.iter()) {
         if (deepEqual(row.id, col_val)) {
           return row;
         }
@@ -82,25 +82,30 @@ export class UpgradesTableHandle {
 
   onInsert = (cb: (ctx: EventContext, row: Upgrades) => void) => {
     return this.tableCache.onInsert(cb);
-  }
+  };
 
   removeOnInsert = (cb: (ctx: EventContext, row: Upgrades) => void) => {
     return this.tableCache.removeOnInsert(cb);
-  }
+  };
 
   onDelete = (cb: (ctx: EventContext, row: Upgrades) => void) => {
     return this.tableCache.onDelete(cb);
-  }
+  };
 
   removeOnDelete = (cb: (ctx: EventContext, row: Upgrades) => void) => {
     return this.tableCache.removeOnDelete(cb);
-  }
+  };
 
   // Updates are only defined for tables with primary keys.
-  onUpdate = (cb: (ctx: EventContext, oldRow: Upgrades, newRow: Upgrades) => void) => {
+  onUpdate = (
+    cb: (ctx: EventContext, oldRow: Upgrades, newRow: Upgrades) => void
+  ) => {
     return this.tableCache.onUpdate(cb);
-  }
+  };
 
-  removeOnUpdate = (cb: (ctx: EventContext, onRow: Upgrades, newRow: Upgrades) => void) => {
+  removeOnUpdate = (
+    cb: (ctx: EventContext, onRow: Upgrades, newRow: Upgrades) => void
+  ) => {
     return this.tableCache.removeOnUpdate(cb);
-  }}
+  };
+}

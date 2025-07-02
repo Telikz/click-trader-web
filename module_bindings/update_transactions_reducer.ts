@@ -7,13 +7,14 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
@@ -28,8 +29,7 @@ import {
   TableCache,
   TimeDuration,
   Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
+} from '@clockworklabs/spacetimedb-sdk';
 
 export type UpdateTransactions = {};
 
@@ -38,21 +38,21 @@ export type UpdateTransactions = {};
  */
 export namespace UpdateTransactions {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
-    return AlgebraicType.createProductType([
-    ]);
+    return AlgebraicType.createProductType([]);
   }
 
-  export function serialize(writer: BinaryWriter, value: UpdateTransactions): void {
+  export function serialize(
+    writer: BinaryWriter,
+    value: UpdateTransactions
+  ): void {
     UpdateTransactions.getTypeScriptAlgebraicType().serialize(writer, value);
   }
 
   export function deserialize(reader: BinaryReader): UpdateTransactions {
     return UpdateTransactions.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-

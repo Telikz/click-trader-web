@@ -7,17 +7,18 @@
 import {
   AlgebraicType,
   AlgebraicValue,
-  BinaryReader,
-  BinaryWriter,
+  type BinaryReader,
+  type BinaryWriter,
   CallReducerFlags,
   ConnectionId,
   DbConnectionBuilder,
   DbConnectionImpl,
   DbContext,
+  deepEqual,
   ErrorContextInterface,
   Event,
   EventContextInterface,
-  Identity,
+  type Identity,
   ProductType,
   ProductTypeElement,
   ReducerEventContextInterface,
@@ -27,24 +28,23 @@ import {
   SumTypeVariant,
   TableCache,
   TimeDuration,
-  Timestamp,
-  deepEqual,
-} from "@clockworklabs/spacetimedb-sdk";
-import { StockType as __StockType } from "./stock_type_type";
+  type Timestamp,
+} from '@clockworklabs/spacetimedb-sdk';
+import { StockType as __StockType } from './stock_type_type';
 
 export type Player = {
-  identity: Identity,
-  username: string | undefined,
-  money: bigint,
-  passiveIncome: bigint,
-  clickPower: bigint,
-  clickTimer: bigint,
-  stockBuyFee: number,
-  stockSellFee: number,
-  online: boolean,
-  upgrades: number[],
-  stocks: __StockType[],
-  lastClick: Timestamp,
+  identity: Identity;
+  username: string | undefined;
+  money: bigint;
+  passiveIncome: bigint;
+  clickPower: bigint;
+  clickTimer: bigint;
+  stockBuyFee: number;
+  stockSellFee: number;
+  online: boolean;
+  upgrades: number[];
+  stocks: __StockType[];
+  lastClick: Timestamp;
 };
 
 /**
@@ -52,23 +52,32 @@ export type Player = {
  */
 export namespace Player {
   /**
-  * A function which returns this type represented as an AlgebraicType.
-  * This function is derived from the AlgebraicType used to generate this type.
-  */
+   * A function which returns this type represented as an AlgebraicType.
+   * This function is derived from the AlgebraicType used to generate this type.
+   */
   export function getTypeScriptAlgebraicType(): AlgebraicType {
     return AlgebraicType.createProductType([
-      new ProductTypeElement("identity", AlgebraicType.createIdentityType()),
-      new ProductTypeElement("username", AlgebraicType.createOptionType(AlgebraicType.createStringType())),
-      new ProductTypeElement("money", AlgebraicType.createU256Type()),
-      new ProductTypeElement("passiveIncome", AlgebraicType.createU128Type()),
-      new ProductTypeElement("clickPower", AlgebraicType.createU128Type()),
-      new ProductTypeElement("clickTimer", AlgebraicType.createI64Type()),
-      new ProductTypeElement("stockBuyFee", AlgebraicType.createU16Type()),
-      new ProductTypeElement("stockSellFee", AlgebraicType.createU16Type()),
-      new ProductTypeElement("online", AlgebraicType.createBoolType()),
-      new ProductTypeElement("upgrades", AlgebraicType.createArrayType(AlgebraicType.createU16Type())),
-      new ProductTypeElement("stocks", AlgebraicType.createArrayType(__StockType.getTypeScriptAlgebraicType())),
-      new ProductTypeElement("lastClick", AlgebraicType.createTimestampType()),
+      new ProductTypeElement('identity', AlgebraicType.createIdentityType()),
+      new ProductTypeElement(
+        'username',
+        AlgebraicType.createOptionType(AlgebraicType.createStringType())
+      ),
+      new ProductTypeElement('money', AlgebraicType.createU256Type()),
+      new ProductTypeElement('passiveIncome', AlgebraicType.createU128Type()),
+      new ProductTypeElement('clickPower', AlgebraicType.createU128Type()),
+      new ProductTypeElement('clickTimer', AlgebraicType.createI64Type()),
+      new ProductTypeElement('stockBuyFee', AlgebraicType.createU16Type()),
+      new ProductTypeElement('stockSellFee', AlgebraicType.createU16Type()),
+      new ProductTypeElement('online', AlgebraicType.createBoolType()),
+      new ProductTypeElement(
+        'upgrades',
+        AlgebraicType.createArrayType(AlgebraicType.createU16Type())
+      ),
+      new ProductTypeElement(
+        'stocks',
+        AlgebraicType.createArrayType(__StockType.getTypeScriptAlgebraicType())
+      ),
+      new ProductTypeElement('lastClick', AlgebraicType.createTimestampType()),
     ]);
   }
 
@@ -79,7 +88,4 @@ export namespace Player {
   export function deserialize(reader: BinaryReader): Player {
     return Player.getTypeScriptAlgebraicType().deserialize(reader);
   }
-
 }
-
-

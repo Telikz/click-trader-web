@@ -1,41 +1,38 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { SignedIn, SignedOut } from "@clerk/tanstack-react-start";
-import { AppLayout } from "~/components/AppLayout";
-import ClickField from "~/components/ClickField";
-import UpgradesList from "~/components/upgrades/UpgradesList";
-import { Leaderboards } from "~/components/Leaderboards";
-import { useLockedUpgrades } from "~/stores/useUpgradeStore";
-import BalanceCard from "~/components/player/BalanceCard";
-import PortfolioCard from "~/components/player/PortfolioCard";
-import { LandingPage } from "~/components/LandingPage";
+import { SignedIn, SignedOut } from '@clerk/tanstack-react-start';
+import { createFileRoute } from '@tanstack/react-router';
+import ClickField from '~/components/ClickField';
+import { LandingPage } from '~/components/LandingPage';
+import { Leaderboards } from '~/components/Leaderboards';
+import BalanceCard from '~/components/player/BalanceCard';
+import PortfolioCard from '~/components/player/PortfolioCard';
+import UpgradesList from '~/components/upgrades/UpgradesList';
+import { useLockedUpgrades } from '~/stores/useUpgradeStore';
 
-export const Route = createFileRoute("/")({
-   component: Home,
+export const Route = createFileRoute('/')({
+  component: Home,
 });
 
 function Home() {
-   const upgrades = useLockedUpgrades();
+  const upgrades = useLockedUpgrades();
 
-   return (
-      <>
-         <SignedIn>
-            <AppLayout>
-               <div className="min-h-screen bg-base-200 pb-4 px-4 flex flex-col items-center gap-6">
-                  <BalanceCard />
-                  <div className="w-full flex flex-col lg:flex-row gap-6">
-                     <ClickField />
-                     <UpgradesList upgrades={upgrades} />
-                  </div>
-                  <div className="w-full flex flex-col lg:flex-row gap-6">
-                     <PortfolioCard />
-                     <Leaderboards />
-                  </div>
-               </div>
-            </AppLayout>
-         </SignedIn>
-         <SignedOut>
-            <LandingPage />
-         </SignedOut>
-      </>
-   );
+  return (
+    <>
+      <SignedIn>
+        <div className="flex min-h-screen flex-col items-center gap-6 bg-base-200 px-4 pb-4">
+          <BalanceCard />
+          <div className="flex w-full flex-col gap-6 lg:flex-row">
+            <ClickField />
+            <UpgradesList upgrades={upgrades} />
+          </div>
+          <div className="flex w-full flex-col gap-6 lg:flex-row">
+            <PortfolioCard />
+            <Leaderboards />
+          </div>
+        </div>
+      </SignedIn>
+      <SignedOut>
+        <LandingPage />
+      </SignedOut>
+    </>
+  );
 }

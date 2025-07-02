@@ -1,24 +1,26 @@
-import { useSpacetimeConnection } from "~/spacetimedb/useSpacetimeConnection";
-import { useSpacetime } from "~/spacetimedb/useSpacetimeConnection";
-import SpacetimeLoading from "./SpacetimeLoading";
-import { usePlayerStore } from "~/stores/usePlayerStore";
-import { ReactNode } from "react";
-import { usePlayerSync } from "~/spacetimedb/usePlayerSync";
-import { useUpgradeSync } from "~/spacetimedb/useUpgradeSync";
-import { useStockSync } from "~/spacetimedb/useStockSync";
+import type { ReactNode } from 'react';
+import { usePlayerSync } from '~/spacetimedb/usePlayerSync';
+import {
+  useSpacetime,
+  useSpacetimeConnection,
+} from '~/spacetimedb/useSpacetimeConnection';
+import { useStockSync } from '~/spacetimedb/useStockSync';
+import { useUpgradeSync } from '~/spacetimedb/useUpgradeSync';
+import { usePlayerStore } from '~/stores/usePlayerStore';
+import SpacetimeLoading from './SpacetimeLoading';
 
 export const AppLayout = ({ children }: { children: ReactNode }) => {
-   useSpacetimeConnection();
-   usePlayerSync();
-   useUpgradeSync();
-   useStockSync();
+  useSpacetimeConnection();
+  usePlayerSync();
+  useUpgradeSync();
+  useStockSync();
 
-   const { connected, identity } = useSpacetime();
-   const currentPlayer = usePlayerStore((s) => s.currentPlayer);
+  const { connected, identity } = useSpacetime();
+  const currentPlayer = usePlayerStore((s) => s.currentPlayer);
 
-   if (!connected || !identity || !currentPlayer) {
-      return <SpacetimeLoading />;
-   }
+  if (!(connected && identity && currentPlayer)) {
+    return <SpacetimeLoading />;
+  }
 
-   return <>{children}</>;
+  return <>{children}</>;
 };
